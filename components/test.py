@@ -27,7 +27,6 @@ def make_card(card_title, card_value):
     card = imports.dbc.Card(
         imports.dbc.CardBody(
             [
-                
                 html.H5(card_title, className="card-title fs-5 text-center"),
                 html.H1(
                     card_value,
@@ -76,7 +75,6 @@ def render(app: Dash) -> imports.dbc.Row:
         id="live-updates",
         children=[
             imports.dbc.Col(
-                imports.dbc.Spinner(color="danger", type="grow", size="sm"),
                 id="pH",
                 className="p-3",
             ),

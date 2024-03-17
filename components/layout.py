@@ -10,6 +10,7 @@ def create_layout(app: Dash) -> imports.dbc.Container:
         children=[
             html.H1(app.title),
             html.H2("Live Updates", className="text-center h2 fw-semibold"),
+            imports.dbc.Spinner(color="danger", type="grow", size="sm"),
             test.render(app),
             html.H2("Frequency of Data"),
             frequency_tab.render(app),
