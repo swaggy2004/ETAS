@@ -41,7 +41,7 @@ def make_card(card_title, card_value):
     return card
 
 
-def create_live_updates(app: Dash) -> imports.dbc.Row:
+def render(app: Dash) -> imports.dbc.Row:
     @app.callback(
         Output("pH", "children"),
         Output("temp", "children"),
@@ -76,16 +76,9 @@ def create_live_updates(app: Dash) -> imports.dbc.Row:
         id="live-updates",
         children=[
             imports.dbc.Col(
-                imports.dbc.Card(
-                    imports.dbc.CardBody(
-                        [
-                            imports.dbc.Spinner(
-                                color="danger", type="grow", size="sm"),
-
-                        ]),
-                    className="w-100",
-                    className="p-3",
-                ),),
+                id="pH",
+                className="p-3",
+            ),
             imports.dbc.Col(
                 id="temp",
                 className="p-3",
