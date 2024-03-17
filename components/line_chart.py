@@ -62,11 +62,19 @@ def render(app: Dash) -> imports.dbc.Row:
             # Plot hourly average pH value
             fig = px.line(hourly_avg, x='hour', y='phValue')
 
+    # Update X and Y axis labels
+    fig.update_layout(xaxis_title="Hours", yaxis_title="pH Value")
+
     return imports.dbc.Row(
         children=[
             dcc.Graph(
                 id="lime-chart",
                 figure=fig,
+            ),
+            dcc.Interval(
+                id='interval-component',
+                interval=10*1000,  # Update every 10 seconds
+                n_intervals=0
             )
         ],
         className="justify-content-center align-items-center row-cols-1 row-cols-md-3 row-cols-lg-3 w-100"
