@@ -1,5 +1,5 @@
 from dash import Dash, html
-from components.test as test
+import components.test as test
 import imports  # Import the imports module
 import components.frequency_tab as frequency_tab  # Import the frequency_tab module
 # from components import line_chart  # Import the line_chart module
