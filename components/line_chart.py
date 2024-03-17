@@ -1,6 +1,4 @@
 from datetime import datetime
-from dash import Dash, html
-import dash_core_components as dcc
 import pandas as pd
 import sqlalchemy
 
@@ -24,6 +22,5 @@ hourly_avg['hour'] = hourly_avg.index
 hourly_avg = hourly_avg[['phValue', 'tdsValue',
                          'tempValue', 'turbidityValue', 'hour']]
 
-print(df)
 
 print(hourly_avg)
