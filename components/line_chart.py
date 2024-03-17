@@ -6,13 +6,15 @@ engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
 current_date = datetime.now().date()
-sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
+sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{
+    current_date}'"
 
 df = pd.read_sql(sql, engine)
 
-hourly_avg = df.groupby(df['collectedDate'].dt.hour).mean()
+# Extract hour from collectedDate
+df['hour'] = df['collectedDate'].dt.hour
 
-# Extract hour from collectedDate and add it as a separate column
-hourly_avg['hour'] = hourly_avg.index
+# Group by hour and calculate mean for each hour
+hourly_avg = df.groupby('hour').mean()
 
 print(hourly_avg)
