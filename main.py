@@ -13,6 +13,4 @@ app.layout = create_layout(app)
 # setup_callbacks(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
-
-"""host="0.0.0.0"""
+    app.run_server(host="0.0.0.0", debug=True)
