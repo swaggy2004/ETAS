@@ -2,8 +2,7 @@ from dash import Dash, html
 import components.test as test
 import imports  
 import components.frequency_tab as frequency_tab
-# from components import line_chart  # Import the line_chart module
-
+from components import line_chart  
 
 def create_layout(app: Dash) -> imports.dbc.Container:
     return imports.dbc.Container(
@@ -14,6 +13,6 @@ def create_layout(app: Dash) -> imports.dbc.Container:
             test.render(app),
             html.H2("Frequency of Data"),
             frequency_tab.render(app),
-            # line_chart.render(app),
+            line_chart.render(app),
         ],
     )
