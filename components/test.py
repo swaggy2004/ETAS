@@ -1,6 +1,6 @@
 from dash import Dash, html, dcc
-from dash.dependencies import Input, Output
 import imports
+from dash.dependencies import Output, Input
 import sqlalchemy
 import pandas as pd
 
@@ -23,28 +23,30 @@ def fetch_latest_data():
         return None
 
 
-def create_card_body(card_title, card_value):
-    return [
-        imports.dbc.Spinner(color="danger", type="grow", size="sm"),
-        html.H5(card_title, className="card-title fs-5 text-center"),
-        html.H1(
-            # Set id to easily update the value
-            id=card_title.lower().replace(" ", "-") + "-value",
-            children=card_value,
-            className="card-text h1 fw-bold text-center",
+def make_card(card_title, card_value):
+    card = imports.dbc.Card(
+        imports.dbc.CardBody(
+            [
+                imports.dbc.Spinner(color="danger", size="sm"),
+                html.H5(card_title, className="card-title fs-5 text-center"),
+                html.H1(
+                    card_value,
+                    className="card-text h1 fw-bold text-center",
+                ),
+            ]
         ),
-    ]
+        # style={"width": "17rem"},
+        className="w-100"
+    )
+    return card
 
 
-def render(app: Dash) -> imports.dbc.Row:
-    # Define the callback function inside the render function
+def create_live_updates(app: Dash) -> imports.dbc.Row:
     @app.callback(
-        [
-            Output("pH-value", "children"),
-            Output("temp-value", "children"),
-            Output("tds-value", "children"),
-            Output("turbidity-value", "children"),
-        ],
+        Output("pH", "children"),
+        Output("temp", "children"),
+        Output("tds", "children"),
+        Output("turbidity", "children"),
         Input("interval-component", "n_intervals"),
     )
     def update_metrics(n):
@@ -58,49 +60,43 @@ def render(app: Dash) -> imports.dbc.Row:
             latest_value_turbidity = df.iloc[0]['turbidityValue']
             latest_value_tds = df.iloc[0]['tdsValue']
 
-            return (
-                f"{latest_value_ph}",
-                f"{latest_value_temp}°C",
-                f"{latest_value_tds} ppm",
-                f"{latest_value_turbidity} NTU"
-            )
-        else:
-            return "No data available", "No data available", "No data available", "No data available"
+            # Create updated card components
+            ph_card = make_card("pH", f"{latest_value_ph}")
+            temp_card = make_card("Temperature", f"{latest_value_temp}°C")
+            turbidity_card = make_card(
+                "Turbidity", f"{latest_value_turbidity} NTU")
+            tds_card = make_card("Total Dissolved Solids",
+                                 f"{latest_value_tds} ppm")
 
-    # Define the layout with the updated card values
+            return ph_card, temp_card, tds_card, turbidity_card
+        else:
+            return "No data available"
+
     return imports.dbc.Row(
         id="live-updates",
         children=[
             imports.dbc.Col(
                 imports.dbc.Card(
-                    imports.dbc.CardBody(create_card_body("pH", "Loading...")),
+                    imports.dbc.CardBody(
+                        [
+                            imports.dbc.Spinner(
+                                color="danger", type="grow", size="sm"),
+
+                        ]),
                     className="w-100",
-                ),
+                    className="p-3",
+                ),),
+            imports.dbc.Col(
+                id="temp",
                 className="p-3",
             ),
             imports.dbc.Col(
-                imports.dbc.Card(
-                    imports.dbc.CardBody(create_card_body(
-                        "Temperature", "Loading...")),
-                    className="w-100",
-                ),
+                id="tds",
                 className="p-3",
             ),
             imports.dbc.Col(
-                imports.dbc.Card(
-                    imports.dbc.CardBody(create_card_body(
-                        "Total Dissolved Solids", "Loading...")),
-                    className="w-100",
-                ),
-                className="p-3",
-            ),
-            imports.dbc.Col(
-                imports.dbc.Card(
-                    imports.dbc.CardBody(create_card_body(
-                        "Turbidity", "Loading...")),
-                    className="w-100",
-                ),
-                className="p-3",
+                id="turbidity",
+                className=" p-3",
             ),
             dcc.Interval(
                 id='interval-component',
