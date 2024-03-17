@@ -1,4 +1,5 @@
 from dash import Dash, html, dcc
+from dash.dependencies import Input, Output
 import imports
 import sqlalchemy
 import pandas as pd
