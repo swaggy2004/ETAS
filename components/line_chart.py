@@ -1,8 +1,9 @@
 from datetime import datetime
 from dash import Dash, html
-import imports as imports
+import imports
 import dash_core_components as dcc
 import pandas as pd
+import sqlalchemy
 
 engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
