@@ -18,16 +18,39 @@ df['hour'] = df['collectedDate'].dt.hour
 df.drop(columns=['collectedDate'], inplace=True)
 hourly_avg = df.groupby('hour').mean()
 
-fig = px.line(hourly_avg, x=hourly_avg.index,
+fig1 = px.line(hourly_avg, x=hourly_avg.index,
               y=hourly_avg["phValue"], title="Hourly Average")
 
+fig2 = px.line(hourly_avg, x=hourly_avg.index,
+               y=hourly_avg["tdsValue"], title="Hourly Average")
+
+fig3 = px.line(hourly_avg, x=hourly_avg.index,
+               y=hourly_avg["tempValue"], title="Hourly Average")
+
+fig4 = px.line(hourly_avg, x=hourly_avg.index,
+               y=hourly_avg["turbidityValue"], title="Hourly Average")
 
 def render(app: Dash) -> dbc.Row:
-    return dbc.Row(
+    return dbc.Row([
         dcc.Graph(
             id="line-chart",
-            figure=fig
-        )
+            figure=fig1
+        ),
+        dcc.Graph(
+            id="line-chart",
+            figure=fig2
+        ),
+        dcc.Graph(
+            id="line-chart",
+            figure=fig3
+        ),
+        dcc.Graph(
+            id="line-chart",
+            figure=fig4
+        ),
+    ],
+        
+
         # dcc.Graph(
         #     id="line-chart",
         #     figure={
