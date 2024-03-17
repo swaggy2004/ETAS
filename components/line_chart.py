@@ -2,7 +2,7 @@ from datetime import datetime
 import pandas as pd
 import sqlalchemy
 from dash import Dash, html, dcc
-import imports
+import dash_bootstrap_components as dbc
 
 engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
@@ -17,7 +17,7 @@ df['hour'] = df['collectedDate'].dt.hour
 df.drop(columns=['collectedDate'], inplace=True)
 hourly_avg = df.groupby('hour').mean()
 
-def render(app:Dash) -> imports.dbc.Row:
+def render(app:Dash) -> dbc.Row:
     return dbc.Row(
         dcc.Graph(
             id="line-chart",
