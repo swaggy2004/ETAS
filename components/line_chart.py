@@ -12,8 +12,7 @@ df = pd.read_sql(sql, engine)
 
 # Extract hour from collectedDate
 df['hour'] = df['collectedDate'].dt.hour
-
-# Group by hour and calculate mean for each hour
+df.drop(columns=['collectedDate'], inplace=True)
 hourly_avg = df.groupby('hour').mean()
 
 print(hourly_avg)
