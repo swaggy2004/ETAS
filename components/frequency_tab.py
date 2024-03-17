@@ -1,5 +1,5 @@
 from dash import Dash, html, dcc
-import imports
+import imports as imports
 import components.ids as ids
 import dash_bootstrap_components as dbc
 
