@@ -1,6 +1,5 @@
 from datetime import datetime
 from dash import Dash, html
-import imports
 import dash_core_components as dcc
 import pandas as pd
 import sqlalchemy
