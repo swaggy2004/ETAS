@@ -43,8 +43,7 @@ def calculate_hourly_average(df):
 
     return hourly_avg
 
-
-def render(app: Dash) -> imports.dbc.Row:
+def update_graph(n):
     # Fetch today's data from the database
     today_data = fetch_today_data()
 
@@ -65,17 +64,4 @@ def render(app: Dash) -> imports.dbc.Row:
     # Update X and Y axis labels
     fig.update_layout(xaxis_title="Hours", yaxis_title="pH Value")
 
-    return imports.dbc.Row(
-        children=[
-            dcc.Graph(
-                id="lime-chart",
-                figure=fig,
-            ),
-            dcc.Interval(
-                id='interval-component',
-                interval=10*1000,  # Update every 10 seconds
-                n_intervals=0
-            )
-        ],
-        className="w-100"
-    )
+    return fig
