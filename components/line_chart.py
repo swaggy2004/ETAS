@@ -3,6 +3,7 @@ import pandas as pd
 import sqlalchemy
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+import plotly.express as px
 
 engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
