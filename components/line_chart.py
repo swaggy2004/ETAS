@@ -77,5 +77,5 @@ def render(app: Dash) -> imports.dbc.Row:
                 n_intervals=0
             )
         ],
-        className="justify-content-center align-items-center row-cols-1 row-cols-md-3 row-cols-lg-3 w-100"
+        className="w-100"
     )
