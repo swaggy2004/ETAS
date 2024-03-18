@@ -16,6 +16,6 @@ def create_layout(app: Dash) -> imports.dbc.Container:
             frequency_tab.render(app),
             line_chart.render(app),
         ],
-        fluid=True
+        fluid=True,
         className="border border-2 border-danger"
     )
