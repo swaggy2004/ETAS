@@ -9,18 +9,17 @@ from . import ids
 import numpy as np
 
 def get_data(val):
-    engine = sqlalchemy.create_engine(
-        'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
+    engine = sqlalchemy.create_engine('mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
     if val == "Daily":
         current_date = datetime.now().date() - timedelta(days=1)
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
 
     elif val == "Weekly":
-        end_of_current_week = datetime.now().date(
-        ) - timedelta(days=datetime.now().weekday())
-        start_of_previous_week = end_of_current_week - timedelta(days=6)
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_current_week}'"
+        today = datetime.now().date()
+        start_of_previous_week = today - timedelta(days=today.weekday() + 7)
+        end_of_previous_week = start_of_previous_week + timedelta(days=6)
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_previous_week}'"
 
     elif val == "Monthly":
         current_date = datetime.now().date().replace(day=1)
@@ -56,18 +55,15 @@ def process_data(df, frequency):
 
     elif frequency == "Weekly":
         # Convert 'collectedDate' to day of the week and specify desired order
-        new_df['day_of_week'] = pd.Categorical(new_df['collectedDate'].dt.day_name(),
-                                               categories=[
-                                                   "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                                               ordered=True)
+        new_df['day_of_week'] = pd.Categorical(new_df['collectedDate'].dt.day_name(),categories=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],ordered=True)
 
         # Group by 'day_of_week' and calculate the mean
         weekly_avg = new_df.groupby('day_of_week').mean()
 
         # Reindex to include all days of the week and fill missing values with NaN
-        weekly_avg = weekly_avg.reindex(
-            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fill_value=np.nan)
-
+        weekly_avg = weekly_avg.reindex(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fill_value=np.nan)
+        
+        print(weekly_avg)
         return weekly_avg
 
 
