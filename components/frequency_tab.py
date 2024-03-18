@@ -11,7 +11,7 @@ def render(app: Dash) -> imports.dbc.Row:
             imports.dbc.Col(
                 dcc.RadioItems(
                     id=ids.DATA_FREQUENCY,
-                    className="btn-group border border-2 border-success",
+                    className="btn-group border border-2 border-success w-50",
                     inputClassName="btn-check border border-2 border-black",
                     labelClassName="btn btn-primary fs-4 border border-2 border-danger",
                     options=[
@@ -23,7 +23,6 @@ def render(app: Dash) -> imports.dbc.Row:
                     inline=True,
                 ),
                 className="radio-group border border-2 border-danger",
-                style="width: 50%;"
             ),
         ]
     )
