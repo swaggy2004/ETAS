@@ -18,7 +18,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     {"label": "Weekly", "value": "Weekly"},
                     {"label": "Monthly", "value": "Monthly"},
                 value="Daily",
-            )
+            ),
         ]
     )
 
