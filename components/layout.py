@@ -11,7 +11,7 @@ def create_layout(app: Dash) -> imports.dbc.Container:
             html.H1(app.title),
             html.H2("Live Updates", className="text-center h2 fw-semibold"),
             live_update.render(app),
-            html.H2("Frequency of Data"),
+            html.H2("Frequency of Data", className="text-center h2 fw-semibold mb-4"),
             frequency_tab.render(app),
             line_chart.render(app),
         ],
