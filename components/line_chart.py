@@ -63,10 +63,11 @@ def process_data(df, frequency):
         # Group by 'day_of_week' and calculate the mean
         weekly_avg = new_df.groupby('day_of_week').mean()
 
-        # Check for missing days and fill them with NaN
+        # Reindex to include all days of the week
         weekly_avg = weekly_avg.reindex(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
 
         return weekly_avg
+
 
 
     elif frequency == "Monthly":
