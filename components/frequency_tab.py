@@ -6,7 +6,7 @@ import dash_bootstrap_components as dbc
 
 def render(app: Dash) -> imports.dbc.Row:
     return imports.dbc.Row(
-        className="mb-5 justify-content-center align-items-center",
+        className="mb-5 justify-content-center align-items-center text-center",
         children=[
             imports.dbc.Col(
                 dcc.RadioItems(
