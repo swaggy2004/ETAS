@@ -1,8 +1,9 @@
 from dash import Dash, html
 import components.live_update as live_update
-import imports  
+import imports
 import components.frequency_tab as frequency_tab
-from components import line_chart  
+from components import line_chart
+
 
 def create_layout(app: Dash) -> imports.dbc.Container:
     return imports.dbc.Container(
@@ -16,5 +17,4 @@ def create_layout(app: Dash) -> imports.dbc.Container:
             frequency_tab.render(app),
             line_chart.render(app),
         ],
-        fluid=True
     )
