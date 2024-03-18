@@ -93,7 +93,7 @@ def render(app: Dash) -> dbc.Row:
         fig2 = px.line(processed_df, x=processed_df.index,
                        y="tdsValue", title=val + " Average Total Dissolved Solids")
         fig3 = px.line(processed_df, x=processed_df.index,
-                       y="tempValue", title=val + "Average Temperature")
+                       y="tempValue", title=val + " Average Temperature")
         fig4 = px.line(processed_df, x=processed_df.index,
                        y="turbidityValue", title=val + " Average Turbidity")
 
