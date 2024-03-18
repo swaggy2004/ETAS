@@ -14,18 +14,22 @@ def get_data(val):
 
     if val == "Daily":
         current_date = datetime.now().date() - timedelta(days=1)
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{
+            current_date}'"
 
     elif val == "Weekly":
-        end_of_current_week = datetime.now().date() - timedelta(days=datetime.now().weekday())
+        end_of_current_week = datetime.now().date(
+        ) - timedelta(days=datetime.now().weekday())
         start_of_previous_week = end_of_current_week - timedelta(days=6)
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_current_week}'"
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{
+            start_of_previous_week}' AND '{end_of_current_week}'"
 
     elif val == "Monthly":
         current_date = datetime.now().date().replace(day=1)
         next_month = current_date.replace(month=current_date.month+1)
         end_of_month = next_month - timedelta(days=1)
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{current_date}' AND '{end_of_month}'"
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{
+            current_date}' AND '{end_of_month}'"
 
     else:
         return None
@@ -52,12 +56,13 @@ def process_data(df, frequency):
         # Calculate hourly average for each hour
         hourly_avg = new_df.groupby('hour').mean()
         return hourly_avg
-    
+
     elif frequency == "Weekly":
         # Convert 'collectedDate' to day of the week and specify desired order
-        new_df['day_of_week'] = pd.Categorical(new_df['collectedDate'].dt.day_name(), 
-                                            categories=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
-                                            ordered=True)
+        new_df['day_of_week'] = pd.Categorical(new_df['collectedDate'].dt.day_name(),
+                                               categories=[
+                                                   "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                                               ordered=True)
 
         # Set 'day_of_week' as index and drop 'collectedDate'
         new_df.set_index('day_of_week', inplace=True)
@@ -67,8 +72,6 @@ def process_data(df, frequency):
         weekly_avg = new_df.groupby('day_of_week').mean()
         return weekly_avg
 
-
-    
     elif frequency == "Monthly":
         # Set 'collectedDate' as index and drop other columns
         new_df.set_index('collectedDate', inplace=True)
@@ -90,7 +93,7 @@ def render(app: Dash) -> dbc.Row:
 
         # Create line charts
         fig1 = px.line(processed_df, x=processed_df.index,
-                       y="phValue", title= val + " Average pH")
+                       y="phValue", title=val + " Average pH")
         fig2 = px.line(processed_df, x=processed_df.index,
                        y="tdsValue", title=val + " Average Total Dissolved Solids")
         fig3 = px.line(processed_df, x=processed_df.index,
