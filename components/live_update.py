@@ -27,7 +27,7 @@ def make_card(card_title, card_value):
     card = imports.dbc.Card(
         imports.dbc.CardBody(
             [
-                html.H5(card_title, className="card-title fs-5 text-center"),
+                html.H5(card_title, className="card-title fs-6 text-center"),
                 html.H1(
                     card_value,
                     className="card-text h2 fw-bold text-center",
@@ -91,5 +91,5 @@ def render(app: Dash) -> imports.dbc.Row:
                 n_intervals=0
             ),
         ],
-        className="justify-content-center align-items-center row-cols-1 row-cols-md-2 row-cols-lg-4 mb-5 text-center"
+        className="justify-content-center align-items-center row-cols-1 row-cols-md-2 row-cols-lg-4 mb-5 text-center gap-1"
     )
