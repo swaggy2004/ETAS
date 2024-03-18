@@ -63,15 +63,18 @@ def render(app: Dash) -> dbc.Row:
         df = get_data()
         processed_df = process_data(df, val)
 
+        # Reset index to ensure it's numeric or date-like
+        processed_df.reset_index(inplace=True)
+
         # Create line charts
-        fig1 = px.line(processed_df, x=processed_df.index,
-                       y=processed_df["phValue"], title="Hourly Average pH")
-        fig2 = px.line(processed_df, x=processed_df.index,
-                       y=processed_df["tdsValue"], title="Hourly Average TDS")
-        fig3 = px.line(processed_df, x=processed_df.index,
-                       y=processed_df["tempValue"], title="Hourly Average Temperature")
-        fig4 = px.line(processed_df, x=processed_df.index,
-                       y=processed_df["turbidityValue"], title="Hourly Average Turbidity")
+        fig1 = px.line(processed_df, x='index',
+                       y="phValue", title="Hourly Average pH")
+        fig2 = px.line(processed_df, x='index',
+                       y="tdsValue", title="Hourly Average TDS")
+        fig3 = px.line(processed_df, x='index',
+                       y="tempValue", title="Hourly Average Temperature")
+        fig4 = px.line(processed_df, x='index',
+                       y="turbidityValue", title="Hourly Average Turbidity")
 
         return fig1, fig2, fig3, fig4
 
