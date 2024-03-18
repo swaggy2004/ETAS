@@ -15,10 +15,14 @@ def get_data(val):
     if val == "Daily":
         current_date = datetime.now().date() - timedelta(days=1)
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
+        
     elif val == "Weekly":
-        start_of_week = datetime.now().date() - timedelta(days=datetime.now().weekday())
-        end_of_week = start_of_week + timedelta(days=6)
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_week}' AND '{end_of_week}'"
+        end_of_current_week = datetime.now().date() - timedelta(days=datetime.now().weekday() + 1)
+        start_of_previous_week = end_of_current_week - timedelta(days=6)
+        end_of_previous_week = start_of_previous_week - timedelta(days=1)
+
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_previous_week}'"
+
     elif val == "Monthly":
         current_date = datetime.now().date().replace(day=1)
         next_month = current_date.replace(month=current_date.month+1)
