@@ -9,10 +9,10 @@ def create_layout(app: Dash) -> imports.dbc.Container:
         id="main-layout",
         children=[
             html.H1(app.title),
-            html.H2("Live Updates", className="text-center h2 fw-semibold mb-3 border border-3 border-danger"),
+            html.H2("Live Updates", className="text-center h2 fw-semibold mb-3"),
             live_update.render(app),
             html.H2("Frequency of Data",
-                    className="text-center h2 fw-semibold mb-3 border border-3 border-danger"),
+                    className="text-center h2 fw-semibold mb-3 border border-3"),
             frequency_tab.render(app),
             line_chart.render(app),
         ],
