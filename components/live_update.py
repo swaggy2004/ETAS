@@ -95,5 +95,5 @@ def render(app: Dash) -> imports.dbc.Row:
                 n_intervals=0
             ),
         ],
-        className="justify-content-center align-items-center row-cols-1 row-cols-md-2 row-cols-lg-4 mb-5 p-0"
+        className="justify-content-center align-items-center row-cols-1 row-cols-md-2 row-cols-lg-4 mb-5 p-0 border border-3 border-danger"
     )
