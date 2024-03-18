@@ -21,11 +21,7 @@ def get_data(val):
         start_of_previous_week = end_of_current_week - timedelta(days=6)
         end_of_previous_week = start_of_previous_week - timedelta(days=1)
 
-        # Format dates to display day of the week
-        start_of_previous_week_str = start_of_previous_week.strftime("%A")
-        end_of_previous_week_str = end_of_previous_week.strftime("%A")
-
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week_str}' AND '{end_of_previous_week_str}'"
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_current_week}'"
 
 
     elif val == "Monthly":
