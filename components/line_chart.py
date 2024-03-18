@@ -60,7 +60,10 @@ def process_data(df, frequency):
         return hourly_avg
     
     elif frequency == "Weekly":
-        new_df['day_of_week'] = new_df['collectedDate'].dt.day_name()
+        # Convert 'collectedDate' to day of the week and specify desired order
+        new_df['day_of_week'] = pd.Categorical(new_df['collectedDate'].dt.day_name(), 
+                                            categories=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
+                                            ordered=True)
 
         # Set 'day_of_week' as index and drop 'collectedDate'
         new_df.set_index('day_of_week', inplace=True)
@@ -69,6 +72,7 @@ def process_data(df, frequency):
         # Calculate daily average for each day of the week
         weekly_avg = new_df.groupby('day_of_week').mean()
         return weekly_avg
+
 
     
     elif frequency == "Monthly":
