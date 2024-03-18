@@ -22,6 +22,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     value="Daily",
                     inline=True,
                 ),
+                class_name="justify-content-center align-items-center"
             )
         ]
     )
