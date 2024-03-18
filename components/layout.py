@@ -13,7 +13,7 @@ def create_layout(app: Dash) -> imports.dbc.Container:
             live_update.render(app),
             html.H2("Frequency of Data",
                     className="text-center h2 fw-semibold mb-3"),
-            frequency_tab.render(app),
+            html.Div(frequency_tab.render(app)),
             line_chart.render(app),
         ],
         fluid=True,
