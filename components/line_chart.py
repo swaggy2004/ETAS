@@ -12,7 +12,7 @@ current_date = datetime.now().date()
 sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
 
 df = pd.read_sql(sql, engine)
-
+print(df)
 df['collectedDate'] = pd.to_datetime(df['collectedDate'])
 df['hour'] = df['collectedDate'].dt.hour
 df.drop(columns=['collectedDate'], inplace=True)
