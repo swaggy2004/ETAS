@@ -124,4 +124,4 @@ def render(app: Dash) -> dbc.Row:
         dcc.Graph(id="line-chart-tds"),
         dcc.Graph(id="line-chart-temp"),
         dcc.Graph(id="line-chart-turbidity")
-    ], className="border border-2 border-danger")
+    ])
