@@ -39,7 +39,7 @@ def make_card(card_title, card_value):
     return card
 
 
-def render(app: Dash) -> imports.dbc.Row:
+def render(app: Dash) -> html.Div:
     @app.callback(
         Output("pH", "children"),
         Output("temp", "children"),
@@ -70,7 +70,7 @@ def render(app: Dash) -> imports.dbc.Row:
         else:
             return "No data available"
 
-    return imports.dbc.Row(
+    return html.dbc(imports.dbc.Row(
         id="live-updates",
         children=[
             imports.dbc.Col(
@@ -95,4 +95,4 @@ def render(app: Dash) -> imports.dbc.Row:
             ),
         ],
         className="justify-content-center align-items-center row-cols-1 row-cols-md-2 row-cols-lg-4 mb-5"
-    )
+    ))
