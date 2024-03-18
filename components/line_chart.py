@@ -51,8 +51,7 @@ def process_data(df, frequency):
         return hourly_avg
     
     elif frequency == "Weekly":
-        # Add 'day_of_week' column from 'collectedDate'
-        new_df['day_of_week'] = new_df['collectedDate'].dt.dayofweek
+        new_df['day_of_week'] = new_df['collectedDate'].dt.day_name()
 
         # Set 'day_of_week' as index and drop 'collectedDate'
         new_df.set_index('day_of_week', inplace=True)
