@@ -69,6 +69,7 @@ def process_data(df, frequency):
         # Calculate daily average for each day of the week
         weekly_avg = new_df.groupby('day_of_week').mean()
         return weekly_avg
+
     
     elif frequency == "Monthly":
         # Set 'collectedDate' as index and drop other columns
