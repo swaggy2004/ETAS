@@ -6,11 +6,11 @@ import dash_bootstrap_components as dbc
 
 def render(app: Dash) -> imports.dbc.Row:
     return imports.dbc.Row(
-        className="mb-5 border border-2 border-danger",
+        className="mb-5 border border-2 border-danger px-2",
         children=[
             dcc.RadioItems(
                 id=ids.DATA_FREQUENCY,
-                className="btn-group p-2",
+                className="btn-group",
                 inputClassName="btn-check",
                 labelClassName="btn btn-primary fs-4",
                 options=[
