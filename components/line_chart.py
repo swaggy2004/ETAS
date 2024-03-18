@@ -6,7 +6,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash.dependencies import Output, Input
 from . import ids
-
+import numpy as np
 
 def get_data(val):
     engine = sqlalchemy.create_engine(
