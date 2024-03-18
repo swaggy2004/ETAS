@@ -34,7 +34,6 @@ def make_card(card_title, card_value):
                 ),
             ]
         ),
-        # style={"width": "17rem"},
         className="w-100"
     )
     return card
@@ -92,7 +91,7 @@ def render(app: Dash) -> imports.dbc.Row:
             ),
             dcc.Interval(
                 id='interval-component',
-                interval=1*1000,  # Update every 1 second
+                interval=3*1000,  # Update every 1 second
                 n_intervals=0
             ),
         ],
