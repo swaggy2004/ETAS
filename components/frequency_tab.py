@@ -10,14 +10,19 @@ def render(app: Dash) -> imports.dbc.Row:
         children=[
             dcc.RadioItems(
                 id=ids.DATA_FREQUENCY,
-                className="btn-group w-75",
-                inputClassName="btn-check",
-                labelClassName="btn btn-primary fs-4 fs-md-4 w-100",
                 options=[
                     {"label": "Daily", "value": "Daily"},
                     {"label": "Weekly", "value": "Weekly"},
                     {"label": "Monthly", "value": "Monthly"},
                 ],
+                # className="btn-group",
+                # inputClassName="btn-check",
+                # labelClassName="btn btn-primary fs-4 fs-md-4",
+                # options=[
+                #     {"label": "Daily", "value": "Daily"},
+                #     {"label": "Weekly", "value": "Weekly"},
+                #     {"label": "Monthly", "value": "Monthly"},
+                # ],
                 value="Daily",
             ),
         ]
