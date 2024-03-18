@@ -4,6 +4,22 @@ import components.ids as ids
 import dash_bootstrap_components as dbc
 
 
+def render(app: Dash) -> imports.dbc.Row:
+    return imports.dbc.Row(
+        children=[
+            dcc.RadioItems(
+                id=ids.DATA_FREQUENCY,
+                options=[
+                    {"label": "Daily", "value": "Daily"},
+                    {"label": "Weekly", "value": "Weekly"},
+                    {"label": "Monthly", "value": "Monthly"},
+                ],
+                value="Daily",
+                className="btn-group btn-group-lg",
+            )
+        ]
+    )
+
 # def render1(app: Dash) -> imports.dbc.Row:
 #     return imports.dbc.Row([
 #         dbc.ButtonGroup(
@@ -34,19 +50,17 @@ import dash_bootstrap_components as dbc
 #         className="justify-content-center align-items-center row-cols-1 row-cols-md-3 row-cols-lg-3 w-100"
 #     )
 
-def render(app: Dash) -> imports.dbc.Row:
-    frequency = ["Daily", "Weekly", "Monthly"]
-
-    return imports.dbc.Row(
-        children=[
-            dcc.RadioItems(
-                id=ids.DATA_FREQUENCY,
-                options=[
-                    {"label": fq, "value": fq} for fq in frequency
-                ],
-                value="Daily",
-                className="btn-group btn-group-lg",
-                inputClassName="btn btn-primary"
-            )
-        ]
-    )
+# def render(app: Dash) -> imports.dbc.Row:
+#     frequency = ["Daily", "Weekly", "Monthly"]
+#     return imports.dbc.Row(
+#         children=[
+#             dcc.RadioItems(
+#                 id=ids.DATA_FREQUENCY,
+#                 options=[
+#                     {"label": fq, "value": fq} for fq in frequency,
+#                 ],
+#                 value="Daily",
+#                 className="btn-group btn-group-lg",
+#             )
+#         ]
+#     )
