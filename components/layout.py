@@ -9,7 +9,7 @@ def create_layout(app: Dash) -> imports.dbc.Container:
     return imports.dbc.Container(
         id="main-layout",
         children=[
-            html.H1(app.title, className="display-4 mb-5"),
+            html.H1(app.title, className="display-4 mb-4"),
             html.H2("Live Updates", className="text-center h2 fw-lighter mb-3"),
             live_update.render(app),
             html.H2("Frequency of Data",
