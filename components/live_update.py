@@ -70,7 +70,7 @@ def render(app: Dash) -> html.Div:
         else:
             return "No data available"
 
-    return html.dbc(imports.dbc.Row(
+    return html.Div(imports.dbc.Row(
         id="live-updates",
         children=[
             imports.dbc.Col(
