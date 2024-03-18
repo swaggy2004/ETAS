@@ -5,7 +5,7 @@ from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash.dependencies import Output, Input
-import ids
+from . import ids
 
 # Create database engine
 engine = sqlalchemy.create_engine(
