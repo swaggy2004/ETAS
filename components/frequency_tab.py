@@ -44,6 +44,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     {"label": fq, "value": fq} for fq in frequency
                 ],
                 value="Daily",
+                className="btn-group btn-group-lg",
             )
         ]
     )
