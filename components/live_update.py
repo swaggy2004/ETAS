@@ -30,7 +30,7 @@ def make_card(card_title, card_value):
                 html.H5(card_title, className="card-title fs-6 text-center"),
                 html.H1(
                     card_value,
-                    className="card-text h2 fw-bold text-center",
+                    className="card-text h2 fw-sem-bold text-center",
                 ),
             ]
         ),
