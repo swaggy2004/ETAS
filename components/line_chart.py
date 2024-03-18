@@ -17,8 +17,7 @@ def get_data():
     current_date = datetime.now().date()
 
     # SQL query to retrieve data for the current date
-    sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{
-        current_date}'"
+    sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
 
     # Read data from SQL into DataFrame
     df = pd.read_sql(sql, engine)
