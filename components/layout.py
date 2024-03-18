@@ -17,4 +17,5 @@ def create_layout(app: Dash) -> imports.dbc.Container:
             line_chart.render(app),
         ],
         fluid=True
+        className="border border-2 border-danger"
     )
