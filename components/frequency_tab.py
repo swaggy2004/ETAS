@@ -22,7 +22,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     value="Daily",
                     inline=True,
                 ),
-                className="radio-group border border-2 border-danger",
+                className="radio-group border border-2 border-danger w-50",
             ),
         ]
     )
