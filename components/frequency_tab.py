@@ -11,7 +11,7 @@ def render(app: Dash) -> imports.dbc.Row:
             dcc.RadioItems(
                 id=ids.DATA_FREQUENCY,
                 className="btn-group w-100 p-0",
-                inputClassName="btn-check w-100 p-0",
+                inputClassName="btn-check w-100",
                 labelClassName="btn btn-primary w-100 fs-4 border border-3 border-danger",
                 options=[
                     {"label": "Daily", "value": "Daily"},
