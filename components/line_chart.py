@@ -56,15 +56,17 @@ def process_data(df, frequency):
 
     elif frequency == "Weekly":
         # Convert 'collectedDate' to day of the week and specify desired order
-        new_df['day_of_week'] = pd.Categorical(new_df['collectedDate'].dt.day_name(), 
-                                            categories=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
-                                            ordered=True)
+        new_df['day_of_week'] = pd.Categorical(new_df['collectedDate'].dt.day_name(),
+                                               categories=[
+                                                   "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                                               ordered=True)
 
         # Group by 'day_of_week' and calculate the mean
         weekly_avg = new_df.groupby('day_of_week').mean()
 
-        # Reindex to include all days of the week
-        weekly_avg = weekly_avg.reindex(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
+        # Reindex to include all days of the week and fill missing values with NaN
+        weekly_avg = weekly_avg.reindex(
+            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fill_value=np.nan)
 
         return weekly_avg
 
