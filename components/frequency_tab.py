@@ -13,7 +13,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     id=ids.DATA_FREQUENCY,
                     className="btn-group",
                     inputClassName="btn-check",
-                    labelClassName="btn btn-primary fs-4 fs-md-4",
+                    labelClassName="btn btn-primary fs-4",
                     options=[
                         {"label": "Daily", "value": "Daily"},
                         {"label": "Weekly", "value": "Weekly"},
@@ -22,6 +22,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     value="Daily",
                     inline=True,
                 ),
-            )
+                className="radio-group",
+            ),
         ]
     )
