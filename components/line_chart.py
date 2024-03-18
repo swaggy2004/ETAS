@@ -29,16 +29,17 @@ def get_data():
 
 
 def process_data(df, frequency):
+    new_df = df.copy()
     if frequency == "Daily":
         # Add 'hour' column from 'collectedDate'
-        df['hour'] = df['collectedDate'].dt.hour
+        new_df['hour'] = new_df['collectedDate'].dt.hour
 
         # Set 'hour' as index and drop 'collectedDate'
-        df.set_index('hour', inplace=True)
-        df.drop(columns=['collectedDate'], inplace=True)
+        new_df.set_index('hour', inplace=True)
+        new_df.drop(columns=['collectedDate'], inplace=True)
 
         # Calculate hourly average for each hour
-        hourly_avg = df.groupby('hour').mean()
+        hourly_avg = new_df.groupby('hour').mean()
         return hourly_avg
     elif frequency == "Weekly":
         # Add 'day_of_week' column from 'collectedDate'
