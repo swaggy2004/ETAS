@@ -38,7 +38,7 @@ def get_data(val):
 
 def process_data(df, frequency):
     new_df = df.copy()
-    if frequency == "Day":
+    if frequency == "Daily":
         # Add 'hour' column from 'collectedDate'
         new_df['hour'] = new_df['collectedDate'].dt.hour
 
@@ -49,7 +49,7 @@ def process_data(df, frequency):
         # Calculate hourly average for each hour
         hourly_avg = new_df.groupby('hour').mean()
         return hourly_avg
-    elif frequency == "Week":
+    elif frequency == "Weekly":
         # Add 'day_of_week' column from 'collectedDate'
         df['day_of_week'] = df['collectedDate'].dt.dayofweek
 
@@ -60,13 +60,11 @@ def process_data(df, frequency):
         # Calculate daily average for each day of the week
         weekly_avg = df.groupby('day_of_week').mean()
         return weekly_avg
-    elif frequency == "Month":
+    elif frequency == "Monthly":
         # Set 'collectedDate' as index and drop other columns
         df.set_index('collectedDate', inplace=True)
         df = df.resample('M').mean()  # Resample to get monthly average
         return df
-    else:
-        return None
 
 
 def render(app: Dash) -> dbc.Row:
@@ -78,13 +76,9 @@ def render(app: Dash) -> dbc.Row:
         [Input(ids.DATA_FREQUENCY, "value")]
     )
     def show_graph(val) -> list:
-        df = get_data(val)
-        if df is None:
-            # Invalid input
-            return [px.line(), px.line(), px.line(), px.line()]
-
+        df = get_data()
         processed_df = process_data(df, val)
-        print(processed_df)
+
         # Create line charts
         fig1 = px.line(processed_df, x=processed_df.index,
                        y="phValue", title="Hourly Average pH")
@@ -97,9 +91,7 @@ def render(app: Dash) -> dbc.Row:
 
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
-            fig.update_layout(xaxis_title="Hour" if val == "Day" else "Day" if val == "Week" else "Month",
-                              yaxis_title="pH" if fig == fig1 else "TDS" if fig == fig2 else
-                              "Temperature" if fig == fig3 else "Turbidity")
+            fig.update_layout(xaxis_title="Hour" if val == "Daily" else "Day" if val == "Weekly" else "Month",yaxis_title="pH" if fig == fig1 else "TDS" if fig == fig2 else "Temperature" if fig == fig3 else "Turbidity")
 
         return fig1, fig2, fig3, fig4
 
