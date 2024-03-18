@@ -27,10 +27,10 @@ def make_card(card_title, card_value):
     card = imports.dbc.Card(
         imports.dbc.CardBody(
             [
-                html.H5(card_title, className="card-title fs-5 text-center"),
+                html.H5(card_title, className="card-title fs-6 text-center"),
                 html.H1(
                     card_value,
-                    className="card-text h1 fw-bold text-center",
+                    className="card-text h2 fw-bold text-center",
                 ),
             ]
         ),
@@ -75,12 +75,15 @@ def render(app: Dash) -> imports.dbc.Row:
         children=[
             imports.dbc.Col(
                 id="pH",
+                className="mb-3"
             ),
             imports.dbc.Col(
                 id="temp",
+                className="mb-3"
             ),
             imports.dbc.Col(
                 id="tds",
+                className="mb-3"
             ),
             imports.dbc.Col(
                 id="turbidity",
