@@ -17,17 +17,13 @@ df['hour'] = df['collectedDate'].dt.hour
 df.drop(columns=['collectedDate'], inplace=True)
 hourly_avg = df.groupby('hour').mean()
 
-fig1 = px.line(hourly_avg, x=hourly_avg.index,
-               y=hourly_avg["phValue"], title="Hourly Average pH")
+fig1 = px.line(hourly_avg, x=hourly_avg.index, y=hourly_avg["phValue"], title="Hourly Average pH")
 
-fig2 = px.line(hourly_avg, x=hourly_avg.index,
-               y=hourly_avg["tdsValue"], title="Hourly Average TDS")
+fig2 = px.line(hourly_avg, x=hourly_avg.index, y=hourly_avg["tdsValue"], title="Hourly Average TDS")
 
-fig3 = px.line(hourly_avg, x=hourly_avg.index,
-               y=hourly_avg["tempValue"], title="Hourly Average Temperature")
+fig3 = px.line(hourly_avg, x=hourly_avg.index,y=hourly_avg["tempValue"], title="Hourly Average Temperature")
 
-fig4 = px.line(hourly_avg, x=hourly_avg.index,
-               y=hourly_avg["turbidityValue"], title="Hourly Average Turbidity")
+fig4 = px.line(hourly_avg, x=hourly_avg.index,y=hourly_avg["turbidityValue"], title="Hourly Average Turbidity")
 
 
 def render(app: Dash) -> dbc.Row:
@@ -48,43 +44,4 @@ def render(app: Dash) -> dbc.Row:
             id="line-chart-turbidity",
             figure=fig4
         ),
-    ],
-        
-
-        # dcc.Graph(
-        #     id="line-chart",
-        #     figure={
-        #         "data": [
-        #             {
-        #                 "x": hourly_avg.index,
-        #                 "y": hourly_avg["phValue"],
-        #                 "type": "line",
-        #                 "name": "pH",
-        #             },
-        #             {
-        #                 "x": hourly_avg.index,
-        #                 "y": hourly_avg["tdsValue"],
-        #                 "type": "line",
-        #                 "name": "TDS",
-        #             },
-        #             {
-        #                 "x": hourly_avg.index,
-        #                 "y": hourly_avg["tempValue"],
-        #                 "type": "line",
-        #                 "name": "Temperature",
-        #             },
-        #             {
-        #                 "x": hourly_avg.index,
-        #                 "y": hourly_avg["turbidityValue"],
-        #                 "type": "line",
-        #                 "name": "Turbidity",
-        #             },
-        #         ],
-        #         "layout": {
-        #             "title": "Hourly Average",
-        #             "xaxis": {"title": "Hour"},
-        #             "yaxis": {"title": "Value"},
-        #         },
-        #     },
-        # )
-    )
+    ],)
