@@ -83,7 +83,7 @@ def render(app: Dash) -> imports.dbc.Row:
             ),
             imports.dbc.Col(
                 id="tds",
-                class_name="p-2 mb-3 mb-md-0"
+                class_name="p-2 mb-3 mb-md-0 text-nowrap"
             ),
             imports.dbc.Col(
                 id="turbidity",
