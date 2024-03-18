@@ -84,7 +84,7 @@ def render(app: Dash) -> dbc.Row:
             return [px.line(), px.line(), px.line(), px.line()]
 
         processed_df = process_data(df, val)
-
+        print(processed_df)
         # Create line charts
         fig1 = px.line(processed_df, x=processed_df.index,
                        y="phValue", title="Hourly Average pH")
