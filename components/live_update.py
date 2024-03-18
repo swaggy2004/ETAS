@@ -86,7 +86,7 @@ def render(app: Dash) -> imports.dbc.Row:
                 class_name="p-3 mb-3 mb-md-0"
             ),
             imports.dbc.Col(
-                id="turbidity"
+                id="turbidity",
                 class_name="p-3"
             ),
             dcc.Interval(
