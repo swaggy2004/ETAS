@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 import sqlalchemy
 from dash import Dash, html, dcc
@@ -14,7 +14,7 @@ def get_data():
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
     # Get current date
-    current_date = datetime.now().date()
+    current_date = datetime.now().date() - timedelta(days=1)
 
     # SQL query to retrieve data for the current date
     sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
