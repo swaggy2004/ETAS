@@ -12,14 +12,14 @@ def get_data(val):
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
-    if val == "Day":
+    if val == "Daily":
         current_date = datetime.now().date() - timedelta(days=1)
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
-    elif val == "Week":
+    elif val == "Weekly":
         start_of_week = datetime.now().date() - timedelta(days=datetime.now().weekday())
         end_of_week = start_of_week + timedelta(days=6)
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_week}' AND '{end_of_week}'"
-    elif val == "Month":
+    elif val == "Monthly":
         current_date = datetime.now().date().replace(day=1)
         next_month = current_date.replace(month=current_date.month+1)
         end_of_month = next_month - timedelta(days=1)
