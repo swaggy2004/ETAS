@@ -76,7 +76,7 @@ def render(app: Dash) -> dbc.Row:
         [Input(ids.DATA_FREQUENCY, "value")]
     )
     def show_graph(val) -> list:
-        df = get_data()
+        df = get_data(val)
         processed_df = process_data(df, val)
 
         # Create line charts
