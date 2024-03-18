@@ -8,16 +8,24 @@ from dash.dependencies import Output, Input
 from . import ids
 
 
-def get_data():
-    # Create database engine
+def get_data(val):
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
-    # Get current date
-    current_date = datetime.now().date() - timedelta(days=1)
-
-    # SQL query to retrieve data for the current date
-    sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
+    if val == "Day":
+        current_date = datetime.now().date() - timedelta(days=1)
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
+    elif val == "Week":
+        start_of_week = datetime.now().date() - timedelta(days=datetime.now().weekday())
+        end_of_week = start_of_week + timedelta(days=6)
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_week}' AND '{end_of_week}'"
+    elif val == "Month":
+        current_date = datetime.now().date().replace(day=1)
+        next_month = current_date.replace(month=current_date.month+1)
+        end_of_month = next_month - timedelta(days=1)
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{current_date}' AND '{end_of_month}'"
+    else:
+        return None
 
     # Read data from SQL into DataFrame
     df = pd.read_sql(sql, engine)
@@ -29,19 +37,18 @@ def get_data():
 
 
 def process_data(df, frequency):
-    new_df = df.copy()
-    if frequency == "Daily":
+    if frequency == "Day":
         # Add 'hour' column from 'collectedDate'
-        new_df['hour'] = new_df['collectedDate'].dt.hour
+        df['hour'] = df['collectedDate'].dt.hour
 
         # Set 'hour' as index and drop 'collectedDate'
-        new_df.set_index('hour', inplace=True)
-        new_df.drop(columns=['collectedDate'], inplace=True)
+        df.set_index('hour', inplace=True)
+        df.drop(columns=['collectedDate'], inplace=True)
 
         # Calculate hourly average for each hour
-        hourly_avg = new_df.groupby('hour').mean()
+        hourly_avg = df.groupby('hour').mean()
         return hourly_avg
-    elif frequency == "Weekly":
+    elif frequency == "Week":
         # Add 'day_of_week' column from 'collectedDate'
         df['day_of_week'] = df['collectedDate'].dt.dayofweek
 
@@ -52,11 +59,13 @@ def process_data(df, frequency):
         # Calculate daily average for each day of the week
         weekly_avg = df.groupby('day_of_week').mean()
         return weekly_avg
-    elif frequency == "Monthly":
+    elif frequency == "Month":
         # Set 'collectedDate' as index and drop other columns
         df.set_index('collectedDate', inplace=True)
         df = df.resample('M').mean()  # Resample to get monthly average
         return df
+    else:
+        return None
 
 
 def render(app: Dash) -> dbc.Row:
@@ -68,7 +77,11 @@ def render(app: Dash) -> dbc.Row:
         [Input(ids.DATA_FREQUENCY, "value")]
     )
     def show_graph(val) -> list:
-        df = get_data()
+        df = get_data(val)
+        if df is None:
+            # Invalid input
+            return [px.line(), px.line(), px.line(), px.line()]
+
         processed_df = process_data(df, val)
 
         # Create line charts
@@ -83,7 +96,7 @@ def render(app: Dash) -> dbc.Row:
 
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
-            fig.update_layout(xaxis_title="Hour" if val == "Daily" else "Day" if val == "Weekly" else "Month",
+            fig.update_layout(xaxis_title="Hour" if val == "Day" else "Day" if val == "Week" else "Month",
                               yaxis_title="pH" if fig == fig1 else "TDS" if fig == fig2 else
                               "Temperature" if fig == fig3 else "Turbidity")
 
