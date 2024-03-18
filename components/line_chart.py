@@ -49,22 +49,24 @@ def process_data(df, frequency):
         # Calculate hourly average for each hour
         hourly_avg = new_df.groupby('hour').mean()
         return hourly_avg
+    
     elif frequency == "Weekly":
         # Add 'day_of_week' column from 'collectedDate'
-        df['day_of_week'] = df['collectedDate'].dt.dayofweek
+        new_df['day_of_week'] = new_df['collectedDate'].dt.dayofweek
 
         # Set 'day_of_week' as index and drop 'collectedDate'
-        df.set_index('day_of_week', inplace=True)
-        df.drop(columns=['collectedDate'], inplace=True)
+        new_df.set_index('day_of_week', inplace=True)
+        new_df.drop(columns=['collectedDate'], inplace=True)
 
         # Calculate daily average for each day of the week
-        weekly_avg = df.groupby('day_of_week').mean()
+        weekly_avg = new_df.groupby('day_of_week').mean()
         return weekly_avg
+    
     elif frequency == "Monthly":
         # Set 'collectedDate' as index and drop other columns
-        df.set_index('collectedDate', inplace=True)
-        df = df.resample('M').mean()  # Resample to get monthly average
-        return df
+        new_df.set_index('collectedDate', inplace=True)
+        new_df = new_df.resample('M').mean()  # Resample to get monthly average
+        return new_df
 
 
 def render(app: Dash) -> dbc.Row:
