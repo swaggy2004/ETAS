@@ -36,6 +36,7 @@ import dash_bootstrap_components as dbc
 
 def render(app: Dash) -> imports.dbc.Row:
     frequency = ["Daily", "Weekly", "Monthly"]
+
     return imports.dbc.Row(
         children=[
             dcc.RadioItems(
@@ -45,6 +46,7 @@ def render(app: Dash) -> imports.dbc.Row:
                 ],
                 value="Daily",
                 className="btn-group btn-group-lg",
+                inputClassName="btn btn-primary"
             )
         ]
     )
