@@ -19,7 +19,6 @@ def get_data(val):
     elif val == "Weekly":
         end_of_current_week = datetime.now().date() - timedelta(days=datetime.now().weekday() + 1)
         start_of_previous_week = end_of_current_week - timedelta(days=6)
-        end_of_previous_week = start_of_previous_week - timedelta(days=1)
 
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_current_week}'"
 
@@ -87,13 +86,13 @@ def render(app: Dash) -> dbc.Row:
 
         # Create line charts
         fig1 = px.line(processed_df, x=processed_df.index,
-                       y="phValue", title="Hourly Average pH")
+                       y="phValue", title= val + " Average pH")
         fig2 = px.line(processed_df, x=processed_df.index,
-                       y="tdsValue", title="Hourly Average TDS")
+                       y="tdsValue", title=val + " Average TDS")
         fig3 = px.line(processed_df, x=processed_df.index,
-                       y="tempValue", title="Hourly Average Temperature")
+                       y="tempValue", title=val + "Average Temperature")
         fig4 = px.line(processed_df, x=processed_df.index,
-                       y="turbidityValue", title="Hourly Average Turbidity")
+                       y="turbidityValue", title=val + " Average Turbidity")
 
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
