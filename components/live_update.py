@@ -75,19 +75,15 @@ def render(app: Dash) -> imports.dbc.Row:
         children=[
             imports.dbc.Col(
                 id="pH",
-                class_name="p-1 mb-3 mb-md-0"
             ),
             imports.dbc.Col(
                 id="temp",
-                class_name="p-1 mb-3 mb-md-0"
             ),
             imports.dbc.Col(
                 id="tds",
-                class_name="p-1 mb-3 mb-md-0"
             ),
             imports.dbc.Col(
                 id="turbidity",
-                class_name="p-1"
             ),
             dcc.Interval(
                 id='interval-component',
