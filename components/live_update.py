@@ -27,7 +27,7 @@ def make_card(card_title, card_value):
     card = imports.dbc.Card(
         imports.dbc.CardBody(
             [
-                html.H5(card_title, className="card-title fs-6 text-center"),
+                html.H5(card_title, className="card-title fs-5 text-center"),
                 html.H1(
                     card_value,
                     className="card-text h2 fw-bold text-center",
