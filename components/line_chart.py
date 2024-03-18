@@ -20,19 +20,13 @@ def get_data(val):
         end_of_current_week = datetime.now().date() - timedelta(days=datetime.now().weekday())
         start_of_previous_week = end_of_current_week - timedelta(days=6)
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_current_week}'"
-  
-    # elif val == "Weekly":
-    #     end_of_current_week = datetime.now().date() - timedelta(days=datetime.now().weekday() + 1)
-    #     start_of_previous_week = end_of_current_week - timedelta(days=6)
-
-    #     sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_current_week}'"
-
 
     elif val == "Monthly":
         current_date = datetime.now().date().replace(day=1)
         next_month = current_date.replace(month=current_date.month+1)
         end_of_month = next_month - timedelta(days=1)
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{current_date}' AND '{end_of_month}'"
+
     else:
         return None
 
@@ -98,7 +92,7 @@ def render(app: Dash) -> dbc.Row:
         fig1 = px.line(processed_df, x=processed_df.index,
                        y="phValue", title= val + " Average pH")
         fig2 = px.line(processed_df, x=processed_df.index,
-                       y="tdsValue", title=val + " Average TDS")
+                       y="tdsValue", title=val + " Average Total Dissolved Solids")
         fig3 = px.line(processed_df, x=processed_df.index,
                        y="tempValue", title=val + "Average Temperature")
         fig4 = px.line(processed_df, x=processed_df.index,
@@ -106,10 +100,16 @@ def render(app: Dash) -> dbc.Row:
 
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
-            fig.update_layout(xaxis_title="Hour" if val == "Daily" else "Day" if val == "Weekly" else "Month",yaxis_title="pH" if fig == fig1 else "TDS" if fig == fig2 else "Temperature" if fig == fig3 else "Turbidity")
+            if fig == fig1:
+                fig.update_layout(yaxis_title="pH Value")
+            elif fig == fig2:
+                fig.update_layout(yaxis_title="Total Dissolved Solids Value")
+            elif fig == fig3:
+                fig.update_layout(yaxis_title="Temperature Value")
+            elif fig == fig4:
+                fig.update_layout(yaxis_title="Turbidity Value")
 
         return fig1, fig2, fig3, fig4
-
     # Return Dash app layout
     return dbc.Row([
         dcc.Graph(id="line-chart-ph"),
