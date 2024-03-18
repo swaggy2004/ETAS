@@ -24,26 +24,30 @@ def get_data():
 
     # Convert 'collectedDate' column to datetime
     df['collectedDate'] = pd.to_datetime(df['collectedDate'])
-    df['hour'] = df['collectedDate'].dt.hour
-
-    # Drop 'collectedDate' column
-    df.drop(columns=['collectedDate'], inplace=True)
 
     return df
 
 
 def process_data(df, frequency):
     if frequency == "Daily":
-        # Calculate hourly average
+        # Add 'hour' column from 'collectedDate' and drop 'collectedDate'
+        df['hour'] = df['collectedDate'].dt.hour
+        df.drop(columns=['collectedDate'], inplace=True)
+
+        # Calculate hourly average for each hour
         hourly_avg = df.groupby('hour').mean()
         return hourly_avg
     elif frequency == "Weekly":
-        # Calculate daily average
-        daily_avg = df.groupby(df.index.date).mean()
-        return daily_avg
+        # Add 'day_of_week' column from 'collectedDate' and drop 'collectedDate'
+        df['day_of_week'] = df['collectedDate'].dt.dayofweek
+        df.drop(columns=['collectedDate'], inplace=True)
+
+        # Calculate daily average for each day of the week
+        weekly_avg = df.groupby('day_of_week').mean()
+        return weekly_avg
     elif frequency == "Monthly":
-        # Calculate monthly average
-        monthly_avg = df.groupby(df.index.month).mean()
+        # Calculate monthly average for each month
+        monthly_avg = df.groupby(df['collectedDate'].dt.month).mean()
         return monthly_avg
 
 
