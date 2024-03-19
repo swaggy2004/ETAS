@@ -12,15 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Clear known_hosts
-      env:
-        HOST_IP: ${{ secrets.HOST_IP }}
-        SSH_USER: ${{ secrets.SSH_USER }}
-      run: |
-        ssh -o StrictHostKeyChecking=no ${SSH_USER}@${HOST_IP} '
-          > ~/.ssh/known_hosts
-        '
-
     - name: Deploy to DigitalOcean Server
       env:
         HOST_IP: ${{ secrets.HOST_IP }}
