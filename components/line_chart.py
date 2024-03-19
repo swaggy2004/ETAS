@@ -91,13 +91,13 @@ def render(app: Dash) -> dbc.Row:
 
         # Create line charts
         fig1 = px.line(processed_df, x=processed_df.index,
-                       y="phValue", title=val + " Average pH")
+                       y="phValue", title=val + " Average pH", markers="true")
         fig2 = px.line(processed_df, x=processed_df.index,
-                       y="tdsValue", title=val + " Average Total Dissolved Solids")
+                       y="tdsValue", title=val + " Average Total Dissolved Solids", markers="true")
         fig3 = px.line(processed_df, x=processed_df.index,
-                       y="tempValue", title=val + " Average Temperature")
+                       y="tempValue", title=val + " Average Temperature", markers="true")
         fig4 = px.line(processed_df, x=processed_df.index,
-                       y="turbidityValue", title=val + " Average Turbidity")
+                       y="turbidityValue", title=val + " Average Turbidity", markers="true")
 
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
