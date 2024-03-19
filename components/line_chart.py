@@ -90,7 +90,7 @@ def render(app: Dash) -> dbc.Row:
         processed_df = process_data(df, val)
 
         # Create line charts
-        fig1 = px.line(processed_df, x=processed_df.index,
+        fig1 = px.area(processed_df, x=processed_df.index,
                        y="phValue", title=val + " Average pH", markers="true")
         fig2 = px.line(processed_df, x=processed_df.index,
                        y="tdsValue", title=val + " Average Total Dissolved Solids", markers="true")
