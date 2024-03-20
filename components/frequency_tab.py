@@ -22,7 +22,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     value="Daily",
                     inline=True,
                 ),
-                className="radio-group",
+                className="radio-group align-items-center justify-content-center",
             ),
         ]
     )

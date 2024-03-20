@@ -15,6 +15,7 @@ def get_data(val):
 
     if val == "Daily":
         current_date = datetime.now().date() - timedelta(days=1)
+        
         sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
 
     elif val == "Weekly":
