@@ -17,6 +17,6 @@ def create_layout(app: Dash) -> imports.dbc.Container:
                     className="text-center h2 fw-lighter mb-3"),
             frequency_tab.render(app),
             line_chart.render(app),
-            render_map(app),
+            render_map.render_map(app),
         ],
     )
