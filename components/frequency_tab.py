@@ -11,8 +11,8 @@ def render(app: Dash) -> imports.dbc.Row:
             imports.dbc.Col(
                 dcc.RadioItems(
                     id=ids.DATA_FREQUENCY,
-                    className="btn-group btn-group-md w-75 mx-auto",
-                    inputClassName="btn-check mx-auto",
+                    className="btn-group btn-group-md w-75 mx-auto justify-content-center align-items-center",
+                    inputClassName="btn-check mx-auto justify-content-center align-items-center",
                     labelClassName="btn btn-primary fs-4 w-100 mx-auto",
                     options=[
                         {"label": "Daily", "value": "Daily"},
@@ -22,7 +22,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     value="Daily",
                     inline=True,
                 ),
-                className="radio-group align-items-center justify-content-center",
+                className="radio-group text-center align-items-center justify-content-center",
             ),
         ]
     )
