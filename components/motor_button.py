@@ -6,7 +6,9 @@ def render(app: Dash) -> dbc.Row:
     return dbc.Row([
         dbc.Switch(
             id="motor-switch",
-            label="Motor",
+            label="On",
             value=False,
-        )
-    ])
+        ),
+    ],
+        className="text-center fs-2"
+)
