@@ -126,8 +126,8 @@ def render(app: Dash) -> dbc.Row:
         return fig1, fig2, fig3, fig4
     # Return Dash app layout
     return dbc.Row([
-        dcc.Graph(id="line-chart-ph", className="mb-3"),
-        dcc.Graph(id="line-chart-tds", className="mb-3"),
-        dcc.Graph(id="line-chart-temp", className="mb-3"),
+        dcc.Graph(id="line-chart-ph"),
+        dcc.Graph(id="line-chart-tds"),
+        dcc.Graph(id="line-chart-temp"),
         dcc.Graph(id="line-chart-turbidity")
     ], className="mb-5")
