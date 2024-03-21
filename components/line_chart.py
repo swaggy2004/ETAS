@@ -100,11 +100,13 @@ def render(app: Dash) -> dbc.Row:
         fig4 = px.area(processed_df, x=processed_df.index,
                        y="turbidityValue", title=val + " Average Turbidity", markers="true")
 
+        fig1.update_layout(plot_bgcolor="rgba(0, 0, 0, 0)")
+        fig2.update_layout(plot_bgcolor="rgba(0, 0, 0, 0)")
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
             if val == "Daily":
                 fig.update_layout(
-                    xaxis_title="Hour of the Day", plot_bgcolor="rgba(0, 0, 0, 0)",)
+                    xaxis_title="Hour of the Day")
             elif val == "Weekly":
                 fig.update_layout(xaxis_title="Day of the Week")
             elif val == "Monthly":
