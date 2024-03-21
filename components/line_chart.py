@@ -96,7 +96,7 @@ def render(app: Dash) -> dbc.Row:
         fig2 = px.area(processed_df, x=processed_df.index,
                        y="tdsValue", title=val + " Average Total Dissolved Solids", markers="true")
         fig3 = px.area(processed_df, x=processed_df.index,
-                       y="tempValue", title=val + " Average Temperature", markers="true")
+                       y="tempValue", title=val + " Average Temperature", markers="true", line=dict(color="crimson"))
         fig4 = px.area(processed_df, x=processed_df.index,
                        y="turbidityValue", title=val + " Average Turbidity", markers="true")
 
