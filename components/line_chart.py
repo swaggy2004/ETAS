@@ -102,6 +102,8 @@ def render(app: Dash) -> dbc.Row:
 
         fig1.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
         fig2.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
+        fig3.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)", line=dict(color="crimson"))
+        fig4.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)", line=dict(color="brown")
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
             if val == "Daily":
