@@ -10,5 +10,5 @@ def render(app: Dash) -> dbc.Row:
             value=False,
         ),
     ],
-        className="text-center fs-2"
-)
+        className="justify-content-center align-items-center fs-1"
+    )
