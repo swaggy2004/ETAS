@@ -8,7 +8,6 @@ from dash.dependencies import Output, Input
 from . import ids
 import numpy as np
 
-
 def get_data(val):
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
@@ -93,11 +92,11 @@ def render(app: Dash) -> dbc.Row:
         # Create line charts
         fig1 = px.area(processed_df, x=processed_df.index,
                        y="phValue", title=val + " Average pH", markers="true")
-        fig2 = px.line(processed_df, x=processed_df.index,
+        fig2 = px.area(processed_df, x=processed_df.index,
                        y="tdsValue", title=val + " Average Total Dissolved Solids", markers="true")
-        fig3 = px.line(processed_df, x=processed_df.index,
+        fig3 = px.area(processed_df, x=processed_df.index,
                        y="tempValue", title=val + " Average Temperature", markers="true")
-        fig4 = px.line(processed_df, x=processed_df.index,
+        fig4 = px.area(processed_df, x=processed_df.index,
                        y="turbidityValue", title=val + " Average Turbidity", markers="true")
 
         # Update axis labels
