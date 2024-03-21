@@ -103,7 +103,8 @@ def render(app: Dash) -> dbc.Row:
         # Update axis labels
         for fig in [fig1, fig2, fig3, fig4]:
             if val == "Daily":
-                fig.update_layout(xaxis_title="Hour of the Day")
+                fig.update_layout(
+                    xaxis_title="Hour of the Day", plot_bgcolor="rgba(0, 0, 0, 0)",)
             elif val == "Weekly":
                 fig.update_layout(xaxis_title="Day of the Week")
             elif val == "Monthly":
