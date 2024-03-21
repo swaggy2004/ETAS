@@ -8,26 +8,30 @@ from dash.dependencies import Output, Input
 from . import ids
 import numpy as np
 
+
 def get_data(val):
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
     if val == "Daily":
         current_date = datetime.now().date() - timedelta(days=1)
-        
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{current_date}'"
+
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) = '{
+            current_date}'"
 
     elif val == "Weekly":
         today = datetime.now().date()
         start_of_previous_week = today - timedelta(days=today.weekday() + 7)
         end_of_previous_week = start_of_previous_week + timedelta(days=6)
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{start_of_previous_week}' AND '{end_of_previous_week}'"
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{
+            start_of_previous_week}' AND '{end_of_previous_week}'"
 
     elif val == "Monthly":
         current_date = datetime.now().date().replace(day=1)
         next_month = current_date.replace(month=current_date.month+1)
         end_of_month = next_month - timedelta(days=1)
-        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{current_date}' AND '{end_of_month}'"
+        sql = f"SELECT collectedDate, phValue, tdsValue, tempValue, turbidityValue FROM datalogs WHERE DATE(collectedDate) BETWEEN '{
+            current_date}' AND '{end_of_month}'"
 
     else:
         return None
@@ -120,8 +124,8 @@ def render(app: Dash) -> dbc.Row:
         return fig1, fig2, fig3, fig4
     # Return Dash app layout
     return dbc.Row([
-        dcc.Graph(id="line-chart-ph"),
-        dcc.Graph(id="line-chart-tds"),
-        dcc.Graph(id="line-chart-temp"),
+        dcc.Graph(id="line-chart-ph", className="mb-3"),
+        dcc.Graph(id="line-chart-tds", className="mb-3"),
+        dcc.Graph(id="line-chart-temp", className="mb-3"),
         dcc.Graph(id="line-chart-turbidity")
     ])
