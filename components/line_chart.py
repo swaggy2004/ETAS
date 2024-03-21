@@ -125,4 +125,4 @@ def render(app: Dash) -> dbc.Row:
         dcc.Graph(id="line-chart-tds", className="mb-3"),
         dcc.Graph(id="line-chart-temp", className="mb-3"),
         dcc.Graph(id="line-chart-turbidity")
-    ])
+    ], className="mb-5")
