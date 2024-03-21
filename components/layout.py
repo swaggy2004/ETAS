@@ -1,5 +1,6 @@
 from dash import Dash, html
 import components.live_update as live_update
+from components.mapview import render_map
 import imports
 import components.frequency_tab as frequency_tab
 from components import line_chart
@@ -16,5 +17,6 @@ def create_layout(app: Dash) -> imports.dbc.Container:
                     className="text-center h2 fw-lighter mb-3"),
             frequency_tab.render(app),
             line_chart.render(app),
+            render_map(app),
         ],
     )
