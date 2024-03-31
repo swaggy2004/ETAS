@@ -13,7 +13,7 @@ def create_layout(app: Dash) -> imports.dbc.Container:
         children=[
             html.H1(app.title, className="display-1 text-center mb-4 mt-5"),
             html.H2("Motor Control", className="text-center h2 fw-lighter mb-3"),
-            motor_button.render(app, className="mb-3"),
+            motor_button.render(app),
             html.H2("Live Updates", className="text-center h2 fw-lighter mb-3"),
             live_update.render(app),
             html.H2("Frequency of Data",

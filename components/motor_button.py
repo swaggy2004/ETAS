@@ -22,5 +22,5 @@ def render(app: Dash) -> dbc.Row:
                 className="d-flex justify-content-center align-items-center"  # Add this line
             )
         ],
-        className="justify-content-center align-items-center fs-1"
+        className="justify-content-center align-items-center fs-1 mb-3"
     )
