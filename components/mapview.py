@@ -1,65 +1,66 @@
-import sqlalchemy
-import pandas as pd
-import plotly.express as px
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+import plotly.express as px
+import pandas as pd
+import sqlalchemy
+
+# Function to retrieve data from the database
 
 
-def get_data():
+def retrieve_data():
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
-
-    # SQL query to fetch all records
-    sql = "SELECT collectedDate, longitude, latitude, phValue, tdsValue, tempValue, turbidityValue FROM datalogs"
-
-    # Read data from SQL into DataFrame
+    sql = "SELECT collectedDate, latitude, longitude, phValue, tdsValue, tempValue, turbidityValue FROM datalogs"
     df = pd.read_sql(sql, engine)
-
-    # Convert 'collectedDate' column to datetime
     df['collectedDate'] = pd.to_datetime(df['collectedDate'])
-
     return df
 
-
-def calculate_purity_index(df, weights={'ph': 0.25, 'turbidity': 0.25, 'temp': 0.25, 'tds': 0.25}):
-    # Normalize data
-    df_normalized = df.copy()
-    for col in ['phValue', 'turbidityValue', 'tempValue', 'tdsValue']:
-        df_normalized[col] = (df_normalized[col] - df_normalized[col].min()) / \
-            (df_normalized[col].max() - df_normalized[col].min())
-
-    # Calculate purity index
-    df['purity_index'] = (df_normalized['phValue'] * weights['ph'] +
-                          df_normalized['turbidityValue'] * weights['turbidity'] +
-                          df_normalized['tempValue'] * weights['temp'] +
-                          df_normalized['tdsValue'] * weights['tds']) / sum(weights.values())
-
-    return df
+# Calculate water purity index based on sensor data
 
 
-def render_map(app: dash.Dash) -> dbc.Row:
-    # Fetch data
-    data = get_data()
+def calculate_purity(df):
+    # Normalize sensor readings to a scale of 0 to 1
+    df['normalized_ph'] = (df['phValue'] - df['phValue'].min()) / \
+        (df['phValue'].max() - df['phValue'].min())
+    df['normalized_tds'] = (df['tdsValue'] - df['tdsValue'].min()) / \
+        (df['tdsValue'].max() - df['tdsValue'].min())
+    df['normalized_turbidity'] = (df['turbidityValue'] - df['turbidityValue'].min()) / (
+        df['turbidityValue'].max() - df['turbidityValue'].min())
+    df['normalized_temp'] = (df['tempValue'] - df['tempValue'].min()) / \
+        (df['tempValue'].max() - df['tempValue'].min())
 
-    # Calculate purity index
-    data_with_purity = calculate_purity_index(data)
+    # Calculate water purity index (weighted average)
+    # Adjust the weights based on importance of each factor
+    df['purityIndex'] = (df['normalized_ph'] * 0.25 + df['normalized_tds'] * 0.25 +
+                         df['normalized_turbidity'] * 0.25 + df['normalized_temp'] * 0.25)
 
-    # Plot map
-    fig = px.scatter_mapbox(data_with_purity,
-                            lat="latitude",
-                            lon="longitude",
-                            color="purity_index",
-                            color_continuous_scale=px.colors.sequential.Viridis,
-                            size_max=15,
-                            zoom=10,
-                            hover_data={"purity_index": True})
+    return df[['collectedDate', 'latitude', 'longitude', 'purityIndex']]
 
-    fig.update_layout(mapbox_style="open-street-map")
-    fig.update_layout(title="Water Purity Map")
+# Function to create the heatmap
 
-    # Return the map as a Dash component
+
+def create_heatmap(df):
+    # Get the latest longitude and latitude
+    latest_location = df[['latitude', 'longitude']].iloc[-1]
+    fig = px.density_mapbox(df, lat='latitude', lon='longitude', z='purityIndex',
+                            radius=10, center=dict(lat=latest_location['latitude'], lon=latest_location['longitude']),
+                            zoom=10, mapbox_style="open-street-map", range_color=[0, 1],
+                            color_continuous_scale=px.colors.sequential.Reds)
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    return fig
+
+
+# Initialize the Dash app
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+# Function to render the map component
+
+
+def render_map(app: Dash) -> dbc.Row:
+    df = retrieve_data()
+    df = calculate_purity(df)
+    fig = create_heatmap(df)
     return dbc.Row([
         dcc.Graph(figure=fig)
     ])
+
