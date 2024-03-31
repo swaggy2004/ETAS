@@ -4,14 +4,14 @@ import dash_bootstrap_components as dbc
 
 def render(app: Dash) -> dbc.Row:
     @app.callback(
-        Output("motor-switch-label", "children"),
+        [Output("motor-switch-label", "children"),
+         Output("motor-switch", "labelPosition")],
         Input("motor-switch", "value"),
     )
     def toggle_label(switch_value):
-        if switch_value:
-            return "ON"
-        else:
-            return "OFF"
+        label_text = "ON" if switch_value else "OFF"
+        label_position = "end" if switch_value else "start"
+        return label_text, label_position
 
     return dbc.Row(
         [
@@ -23,7 +23,6 @@ def render(app: Dash) -> dbc.Row:
                         value=False,
                         className="mx-auto",
                         labelClassName="switch-label",
-                        labelPosition="start" if not switch_value else "end",
                     ),
                 ],
                 width="auto",
