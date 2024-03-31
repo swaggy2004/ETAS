@@ -8,12 +8,16 @@ import sqlalchemy
 
 
 def retrieve_data():
-    # Your existing code to retrieve data from SQL
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
     sql = "SELECT collectedDate, latitude, longitude, phValue, tdsValue, tempValue, turbidityValue FROM datalogs"
     df = pd.read_sql(sql, engine)
     df['collectedDate'] = pd.to_datetime(df['collectedDate'])
+
+    # Convert latitude and longitude columns to numeric with non-numeric values as NaN
+    df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
+    df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+
     return df
 
 # Function to normalize the sensor data using Z-score normalization
