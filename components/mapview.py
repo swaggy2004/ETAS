@@ -1,10 +1,9 @@
+from dash.dependencies import Output, Input
 import sqlalchemy
-import pandas as pd
-import plotly.express as px
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+import plotly.express as px
+import pandas as pd
 
 
 def get_data():
@@ -39,7 +38,7 @@ def calculate_purity_index(df, weights={'ph': 0.25, 'turbidity': 0.25, 'temp': 0
     return df
 
 
-def render_map(app: dash.Dash) -> dbc.Row:
+def render_map(app: Dash) -> dbc.Row:
     # Fetch data
     data = get_data()
 
