@@ -3,6 +3,12 @@ import dash_bootstrap_components as dbc
 
 
 def render(app: Dash) -> dbc.Row:
+    @app.callback(
+        Output("motor-switch", "label"),
+        Input("motor-switch", "value"),
+    )
+    def update_motor_switch_label(value: bool) -> str:
+        return "ON" if value else "OFF"
     return dbc.Row(
         [
             dbc.Col(
@@ -18,10 +24,3 @@ def render(app: Dash) -> dbc.Row:
         ],
         className="justify-content-center align-items-center fs-1"
     )
-
-@app.callback(
-    Output("motor-switch", "label"),
-    Input("motor-switch", "value"),
-)
-def update_motor_switch_label(value: bool) -> str:
-    return "ON" if value else "OFF"
