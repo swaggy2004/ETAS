@@ -1,103 +1,65 @@
-from dash import Dash, html, dcc
-import dash_bootstrap_components as dbc
-import pandas as pd
-import plotly.graph_objs as go
-from scipy.stats import zscore
 import sqlalchemy
-# Function to retrieve data from the SQL database
+import pandas as pd
+import plotly.express as px
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_bootstrap_components as dbc
 
 
-def retrieve_data():
+def get_data():
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
-    sql = "SELECT collectedDate, latitude, longitude, phValue, tdsValue, tempValue, turbidityValue FROM datalogs"
+
+    # SQL query to fetch all records
+    sql = "SELECT collectedDate, longitude, latitude, phValue, tdsValue, tempValue, turbidityValue FROM datalogs"
+
+    # Read data from SQL into DataFrame
     df = pd.read_sql(sql, engine)
+
+    # Convert 'collectedDate' column to datetime
     df['collectedDate'] = pd.to_datetime(df['collectedDate'])
 
-    # Convert latitude and longitude columns to numeric with non-numeric values as NaN
-    df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
-    df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+    return df
+
+
+def calculate_purity_index(df, weights={'ph': 0.25, 'turbidity': 0.25, 'temp': 0.25, 'tds': 0.25}):
+    # Normalize data
+    df_normalized = df.copy()
+    for col in ['phValue', 'turbidityValue', 'tempValue', 'tdsValue']:
+        df_normalized[col] = (df_normalized[col] - df_normalized[col].min()) / \
+            (df_normalized[col].max() - df_normalized[col].min())
+
+    # Calculate purity index
+    df['purity_index'] = (df_normalized['phValue'] * weights['ph'] +
+                          df_normalized['turbidityValue'] * weights['turbidity'] +
+                          df_normalized['tempValue'] * weights['temp'] +
+                          df_normalized['tdsValue'] * weights['tds']) / sum(weights.values())
 
     return df
 
-# Function to normalize the sensor data using Z-score normalization
 
+def render_map(app: dash.Dash) -> dbc.Row:
+    # Fetch data
+    data = get_data()
 
-def normalize_data(df):
-    df['phValue_norm'] = zscore(df['phValue'])
-    df['tdsValue_norm'] = zscore(df['tdsValue'])
-    df['turbidityValue_norm'] = zscore(df['turbidityValue'])
-    df['tempValue_norm'] = zscore(df['tempValue'])
-    return df
+    # Calculate purity index
+    data_with_purity = calculate_purity_index(data)
 
-# Function to calculate the water purity index with weighting
+    # Plot map
+    fig = px.scatter_mapbox(data_with_purity,
+                            lat="latitude",
+                            lon="longitude",
+                            color="purity_index",
+                            color_continuous_scale=px.colors.sequential.Viridis,
+                            size_max=15,
+                            zoom=10,
+                            hover_data={"purity_index": True})
 
+    fig.update_layout(mapbox_style="open-street-map")
+    fig.update_layout(title="Water Purity Map")
 
-def calculate_water_purity_index(row, weights):
-    ph_score = row['phValue_norm']
-    tds_score = row['tdsValue_norm']
-    turbidity_score = row['turbidityValue_norm']
-    temp_score = row['tempValue_norm']
-    return (ph_score * weights['ph'] +
-            tds_score * weights['tds'] +
-            turbidity_score * weights['turbidity'] +
-            temp_score * weights['temperature'])
-
-
-# Retrieve data from the SQL database
-df = retrieve_data()
-
-# Normalize the sensor data
-df = normalize_data(df)
-
-# Define the weights for each variable
-weights = {
-    'ph': 0.4,
-    'tds': 0.2,
-    'turbidity': 0.3,
-    'temperature': 0.1
-}
-
-# Calculate the water purity index with weighting
-df['water_purity_index'] = df.apply(
-    calculate_water_purity_index, weights=weights, axis=1)
-
-
-def render_map(app: Dash) -> dbc.Row:
-    # Create the Plotly scatter mapbox trace
-    trace = go.Scattermapbox(
-        lat=df['latitude'],
-        lon=df['longitude'],
-        mode='markers',
-        marker=dict(
-            size=10,
-            color=df['water_purity_index'],
-            colorscale='Viridis',
-            cmin=-3,
-            cmax=3,
-            colorbar=dict(
-                title='Water Purity Index'
-            )
-        )
-    )
-
-    # Create the map layout
-    layout = go.Layout(
-        mapbox=dict(
-            bearing=0,
-            center=dict(
-                lat=df['latitude'].mean(),
-                lon=df['longitude'].mean()
-            ),
-            pitch=0,
-            zoom=8,
-            style='open-street-map'
-        ),
-        autosize=True
-    )
-
-    fig = go.Figure(data=[trace], layout=layout)
-
+    # Return the map as a Dash component
     return dbc.Row([
         dcc.Graph(figure=fig)
     ])
