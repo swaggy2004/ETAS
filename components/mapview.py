@@ -49,7 +49,7 @@ def create_heatmap(df):
                             zoom=16, mapbox_style="open-street-map", range_color=[0, 1],
                             color_continuous_scale=px.colors.sequential.Reds)
     fig.update_layout(coloraxis_colorbar=dict(
-        title="Water Purity Index"), paper_bgcolor="rgba(0,0,0,0)", height=600)
+        title="Water Purity Index"), paper_bgcolor="rgba(0,0,0,0)", margin=dict(l=0, r=0, t=0, b=0))
     return fig
 
 
