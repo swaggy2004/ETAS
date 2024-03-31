@@ -43,6 +43,11 @@ def render_map(app: dash.Dash) -> dbc.Row:
     # Fetch data
     data = get_data()
 
+    # Drop rows with non-numeric latitude or longitude values
+    data = data.dropna(subset=['latitude', 'longitude'], how='any')
+    data['latitude'] = pd.to_numeric(data['latitude'], errors='coerce')
+    data['longitude'] = pd.to_numeric(data['longitude'], errors='coerce')
+
     # Calculate purity index
     data_with_purity = calculate_purity_index(data)
 
@@ -63,4 +68,3 @@ def render_map(app: dash.Dash) -> dbc.Row:
     return dbc.Row([
         dcc.Graph(figure=fig)
     ])
-
