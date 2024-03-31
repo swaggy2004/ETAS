@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.graph_objs as go
 from scipy.stats import zscore
-
+import sqlalchemy
 # Function to retrieve data from the SQL database
 
 
