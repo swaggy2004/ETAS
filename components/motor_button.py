@@ -10,7 +10,7 @@ def render(app: Dash) -> dbc.Row:
     )
     def toggle_label(switch_value):
         label_text = "ON" if switch_value else "OFF"
-        label_position = "end" if switch_value else "start"
+        label_position = "right" if switch_value else "left"
         return label_text, label_position
 
     return dbc.Row(
@@ -18,12 +18,12 @@ def render(app: Dash) -> dbc.Row:
             dbc.Col(
                 [
                     dbc.Label(id="motor-switch-label"),
-                    dbc.Switch(
+                    dcc.Switch(
                         id="motor-switch",
                         value=False,
                         className="mx-auto",
                         labelClassName="switch-label",
-                        labelPosition="start",  # Set initial labelPosition to "start"
+                        labelPosition="left",  # Set initial labelPosition to "left"
                     ),
                 ],
                 width="auto",
