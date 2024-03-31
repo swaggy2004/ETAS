@@ -3,32 +3,25 @@ import dash_bootstrap_components as dbc
 
 
 def render(app: Dash) -> dbc.Row:
-    @app.callback(
-        [Output("motor-switch-label", "children"),
-         Output("motor-switch", "labelPosition")],
-        Input("motor-switch", "value"),
-    )
-    def toggle_label(switch_value):
-        label_text = "ON" if switch_value else "OFF"
-        label_position = "right" if switch_value else "left"
-        return label_text, label_position
-
     return dbc.Row(
         [
             dbc.Col(
-                [
-                    dbc.Label(id="motor-switch-label"),
-                    dcc.Switch(
-                        id="motor-switch",
-                        value=False,
-                        className="mx-auto",
-                        labelClassName="switch-label",
-                        labelPosition="left",  # Set initial labelPosition to "left"
-                    ),
-                ],
-                width="auto",
-                className="d-flex justify-content-center align-items-center",
+                dbc.Switch(
+                    id="motor-switch",
+                    label="On",
+                    value=False,
+                    className="mx-auto"  # Add this line
+                ),
+                width="auto",  # Add this line
+                className="d-flex justify-content-center align-items-center"  # Add this line
             )
         ],
-        className="justify-content-center align-items-center fs-1",
+        className="justify-content-center align-items-center fs-1"
     )
+
+@app.callback(
+    Output("motor-switch", "label"),
+    Input("motor-switch", "value"),
+)
+def update_motor_switch_label(value: bool) -> str:
+    return "ON" if value else "OFF"
