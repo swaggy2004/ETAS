@@ -67,8 +67,7 @@ def process_data(df, frequency):
         # Reindex to include all days of the week and fill missing values with NaN
         weekly_avg = weekly_avg.reindex(
             ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fill_value=np.nan)
-
-        print(weekly_avg)
+        
         return weekly_avg
 
     elif frequency == "Monthly":
@@ -92,13 +91,13 @@ def render(app: Dash) -> dbc.Row:
 
         # Create line charts
         fig1 = px.area(processed_df, x=processed_df.index,
-                       y="phValue", title=val + " Average pH", markers="true")
+                       y="phValue", title=val + " Average of pH", markers="true")
         fig2 = px.area(processed_df, x=processed_df.index,
-                       y="tdsValue", title=val + " Average Total Dissolved Solids", markers="true")
+                       y="tdsValue", title=val + " Average of Total Dissolved Solids", markers="true")
         fig3 = px.area(processed_df, x=processed_df.index,
-                       y="tempValue", title=val + " Average Temperature", markers="true")
+                       y="tempValue", title=val + " Average of Temperature", markers="true")
         fig4 = px.area(processed_df, x=processed_df.index,
-                       y="turbidityValue", title=val + " Average Turbidity", markers="true")
+                       y="turbidityValue", title=val + " Average of Turbidity", markers="true")
 
         fig1.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
         fig2.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")

@@ -62,7 +62,7 @@ def render(app: Dash) -> imports.dbc.Row:
             ph_card = make_card("pH", f"{latest_value_ph}")
             temp_card = make_card("Temperature", f"{latest_value_temp}°C")
             turbidity_card = make_card(
-                "Turbidity", f"{latest_value_turbidity} NTU")
+                "Turbidity", f"{latest_value_turbidity} %")
             tds_card = make_card("Total Dissolved Solids",
                                  f"{latest_value_tds} ppm")
 

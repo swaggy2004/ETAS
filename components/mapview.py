@@ -48,7 +48,7 @@ def create_heatmap(df):
                             radius=10, center=dict(lat=latest_latitude, lon=latest_longitude),
                             zoom=16, mapbox_style="open-street-map", range_color=[0, 1],
                             color_continuous_scale=px.colors.sequential.Reds)
-    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig.update_layout(zaxis_title="Purity Index", paper_bgcolor="rgba(0,0,0,0)")
     return fig
 
 
