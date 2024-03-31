@@ -1,9 +1,8 @@
-from dash.dependencies import Output, Input
 import sqlalchemy
+import pandas as pd
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
-import pandas as pd
 
 
 def get_data():
@@ -58,7 +57,8 @@ def render_map(app: Dash) -> dbc.Row:
                             color_continuous_scale=px.colors.sequential.Viridis,
                             size_max=15,
                             zoom=10,
-                            hover_data={"purity_index": True})
+                            hover_name="collectedDate",
+                            hover_data={"purity_index": True, "latitude": False, "longitude": False})
 
     fig.update_layout(mapbox_style="open-street-map")
     fig.update_layout(title="Water Purity Map")
