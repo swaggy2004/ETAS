@@ -23,6 +23,7 @@ def render(app: Dash) -> dbc.Row:
                         value=False,
                         className="mx-auto",
                         labelClassName="switch-label",
+                        labelPosition="start",  # Set initial labelPosition to "start"
                     ),
                 ],
                 width="auto",
