@@ -46,7 +46,7 @@ def create_heatmap(df):
     latest_longitude = float(latest_location['longitude'])
     fig = px.density_mapbox(df, lat='latitude', lon='longitude', z='purityIndex',
                             radius=10, center=dict(lat=latest_latitude, lon=latest_longitude),
-                            zoom=18, mapbox_style="open-street-map", range_color=[0, 1],
+                            zoom=16, mapbox_style="open-street-map", range_color=[0, 1],
                             color_continuous_scale=px.colors.sequential.Reds)
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     return fig
