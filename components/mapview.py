@@ -1,7 +1,7 @@
 import sqlalchemy
 import pandas as pd
 import plotly.express as px
-from dash import html, dcc
+from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 
 
@@ -37,7 +37,7 @@ def calculate_purity_index(df, weights={'ph': 0.25, 'turbidity': 0.25, 'temp': 0
     return df
 
 
-def render_heatmap():
+def render_heatmap(app: Dash):
     # Fetch data
     data = get_data()
 
