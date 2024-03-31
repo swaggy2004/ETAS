@@ -105,23 +105,13 @@ def render(app: Dash) -> dbc.Row:
         fig3.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
         fig4.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
         # Update axis labels
-        for fig in [fig1, fig2, fig3, fig4]:
+        for fig, y_title in zip([fig1, fig2, fig3, fig4], ["pH Value", "Total Dissolved Solids Value", "Temperature Value", "Turbidity Value"]):
             if val == "Daily":
-                fig.update_layout(
-                    xaxis_title="Hour of the Day")
+                fig.update_layout(xaxis_title="Hour of the Day", yaxis_title=y_title)
             elif val == "Weekly":
-                fig.update_layout(xaxis_title="Day of the Week")
+                fig.update_layout(xaxis_title="Day of the Week", yaxis_title=y_title)
             elif val == "Monthly":
-                fig.update_layout(xaxis_title="Week of the Month")
-
-            if fig == fig1:
-                fig.update_layout(yaxis_title="pH Value")
-            elif fig == fig2:
-                fig.update_layout(yaxis_title="Total Dissolved Solids Value")
-            elif fig == fig3:
-                fig.update_layout(yaxis_title="Temperature Value")
-            elif fig == fig4:
-                fig.update_layout(yaxis_title="Turbidity Value")
+                fig.update_layout(xaxis_title="Week of the Month", yaxis_title=y_title)
 
         return fig1, fig2, fig3, fig4
     # Return Dash app layout
