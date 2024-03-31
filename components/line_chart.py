@@ -67,10 +67,7 @@ def process_data(df, frequency):
         # Reindex to include all days of the week and fill missing values with NaN
         weekly_avg = weekly_avg.reindex(
             ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], fill_value=np.nan)
-        
-        weekly_avg.columns = [
-            "pH Value", "Total Dissolved Solids Value", "Temperature Value", "Turbidity Value"]
-        
+
         print(weekly_avg)
         return weekly_avg
 
