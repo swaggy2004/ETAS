@@ -1,66 +1,99 @@
-import sqlalchemy
-import pandas as pd
-import plotly.express as px
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+import pandas as pd
+import plotly.graph_objs as go
+from scipy.stats import zscore
+
+# Function to retrieve data from the SQL database
 
 
-def get_data():
+def retrieve_data():
+    # Your existing code to retrieve data from SQL
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
-
-    # SQL query to fetch all records
     sql = "SELECT collectedDate, latitude, longitude, phValue, tdsValue, tempValue, turbidityValue FROM datalogs"
-
-    # Read data from SQL into DataFrame
     df = pd.read_sql(sql, engine)
-
-    # Convert 'collectedDate' column to datetime
     df['collectedDate'] = pd.to_datetime(df['collectedDate'])
-
     return df
 
+# Function to normalize the sensor data using Z-score normalization
 
-def calculate_purity_index(df, weights={'ph': 0.25, 'turbidity': 0.25, 'temp': 0.25, 'tds': 0.25}):
-    # Normalize data
-    df_normalized = df.copy()
-    for col in ['phValue', 'turbidityValue', 'tempValue', 'tdsValue']:
-        df_normalized[col] = (df_normalized[col] - df_normalized[col].min()) / \
-            (df_normalized[col].max() - df_normalized[col].min())
 
-    # Calculate purity index
-    df['purity_index'] = (df_normalized['phValue'] * weights['ph'] +
-                          df_normalized['turbidityValue'] * weights['turbidity'] +
-                          df_normalized['tempValue'] * weights['temp'] +
-                          df_normalized['tdsValue'] * weights['tds']) / sum(weights.values())
-
+def normalize_data(df):
+    df['phValue_norm'] = zscore(df['phValue'])
+    df['tdsValue_norm'] = zscore(df['tdsValue'])
+    df['turbidityValue_norm'] = zscore(df['turbidityValue'])
+    df['tempValue_norm'] = zscore(df['tempValue'])
     return df
 
+# Function to calculate the water purity index with weighting
 
-def render_heatmap(app: Dash):
-    # Fetch data
-    data = get_data()
 
-    # Drop rows with non-numeric latitude or longitude values
-    data = data.dropna(subset=['latitude', 'longitude', 'phValue',
-                       'tdsValue', 'tempValue', 'turbidityValue'], how='any')
-    data['latitude'] = pd.to_numeric(data['latitude'], errors='coerce')
-    data['longitude'] = pd.to_numeric(data['longitude'], errors='coerce')
+def calculate_water_purity_index(row, weights):
+    ph_score = row['phValue_norm']
+    tds_score = row['tdsValue_norm']
+    turbidity_score = row['turbidityValue_norm']
+    temp_score = row['tempValue_norm']
+    return (ph_score * weights['ph'] +
+            tds_score * weights['tds'] +
+            turbidity_score * weights['turbidity'] +
+            temp_score * weights['temperature'])
 
-    # Calculate purity index
-    data_with_purity = calculate_purity_index(data)
 
-    # Plot heatmap
-    fig = px.density_mapbox(data_with_purity,
-                            lat='latitude',
-                            lon='longitude',
-                            z='purity_index',
-                            radius=10,
-                            center=dict(lat=0, lon=180),
-                            zoom=0,
-                            mapbox_style="open-street-map",
-                            color_continuous_scale=px.colors.sequential.Viridis,
-                            opacity=0.6,
-                            title="Water Purity Heatmap")
+# Retrieve data from the SQL database
+df = retrieve_data()
 
-    return fig
+# Normalize the sensor data
+df = normalize_data(df)
+
+# Define the weights for each variable
+weights = {
+    'ph': 0.4,
+    'tds': 0.2,
+    'turbidity': 0.3,
+    'temperature': 0.1
+}
+
+# Calculate the water purity index with weighting
+df['water_purity_index'] = df.apply(
+    calculate_water_purity_index, weights=weights, axis=1)
+
+
+def render_map(app: Dash) -> dbc.Row:
+    # Create the Plotly scatter mapbox trace
+    trace = go.Scattermapbox(
+        lat=df['latitude'],
+        lon=df['longitude'],
+        mode='markers',
+        marker=dict(
+            size=10,
+            color=df['water_purity_index'],
+            colorscale='Viridis',
+            cmin=-3,
+            cmax=3,
+            colorbar=dict(
+                title='Water Purity Index'
+            )
+        )
+    )
+
+    # Create the map layout
+    layout = go.Layout(
+        mapbox=dict(
+            bearing=0,
+            center=dict(
+                lat=df['latitude'].mean(),
+                lon=df['longitude'].mean()
+            ),
+            pitch=0,
+            zoom=8,
+            style='open-street-map'
+        ),
+        autosize=True
+    )
+
+    fig = go.Figure(data=[trace], layout=layout)
+
+    return dbc.Row([
+        dcc.Graph(figure=fig)
+    ])
