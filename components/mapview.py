@@ -42,8 +42,10 @@ def calculate_purity(df):
 def create_heatmap(df):
     # Get the latest longitude and latitude
     latest_location = df[['latitude', 'longitude']].iloc[-1]
+    latest_latitude = float(latest_location['latitude'])
+    latest_longitude = float(latest_location['longitude'])
     fig = px.density_mapbox(df, lat='latitude', lon='longitude', z='purityIndex',
-                            radius=10, center=dict(lat=latest_location['latitude'], lon=latest_location['longitude']),
+                            radius=10, center=dict(lat=latest_latitude, lon=latest_longitude),
                             zoom=10, mapbox_style="open-street-map", range_color=[0, 1],
                             color_continuous_scale=px.colors.sequential.Reds)
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
