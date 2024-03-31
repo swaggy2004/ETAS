@@ -22,7 +22,7 @@ def create_layout(app: Dash) -> imports.dbc.Container:
                     className="text-center h2 fw-lighter mb-3"),
             frequency_tab.render(app),
             line_chart.render(app),
-            html.H2("Purity Map View", className="text-center h2 fw-lighter"),
+            html.H2("Purity Map View", className="text-center h2 fw-lighter mb-3"),
             mapview.render_map(app),
         ],
     )
