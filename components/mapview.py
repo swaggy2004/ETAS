@@ -40,6 +40,33 @@ def render_heatmap():
     data = get_data()
 
     # Drop rows with non-numeric latitude or longitude values
+    data = data.dropna(subset=['latitude', 'longitude', 'phValue',
+                       'tdsValue', 'tempValue', 'turbidityValue'], how='any')
+    data['latitude'] = pd.to_numeric(data['latitude'], errors='coerce')
+    data['longitude'] = pd.to_numeric(data['longitude'], errors='coerce')
+
+    # Calculate purity index
+    data_with_purity = calculate_purity_index(data)
+
+    # Plot heatmap
+    fig = px.density_mapbox(data_with_purity,
+                            lat='latitude',
+                            lon='longitude',
+                            z='purity_index',
+                            radius=10,
+                            center=dict(lat=0, lon=180),
+                            zoom=0,
+                            mapbox_style="open-street-map",
+                            color_continuous_scale=px.colors.sequential.Viridis,
+                            opacity=0.6,
+                            title="Water Purity Heatmap")
+
+    return fig.show()
+
+    # Fetch data
+    data = get_data()
+
+    # Drop rows with non-numeric latitude or longitude values
     data = data.dropna(
         subset=['latitude', 'longitude', 'purity_index'], how='any')
     data['latitude'] = pd.to_numeric(data['latitude'], errors='coerce')
