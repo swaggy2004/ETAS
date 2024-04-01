@@ -37,10 +37,7 @@ def update_data(state):
         print("Error: ", e)
 
 
-
-
 def render(app: Dash) -> dbc.Row:
-    global_state = fetch_latest_data()
     @app.callback(
         Output("motor-switch", "label"),
         Input("motor-switch", "value"),
@@ -51,17 +48,19 @@ def render(app: Dash) -> dbc.Row:
         else:
             state = 0
         print(state)
-        global_state = state
+        session_state = fetch_latest_data()
         update_data(state)
         return "ON" if value else "OFF"
-    
+
+    session_state = fetch_latest_data()
+
     return dbc.Row(
         [
             dbc.Col(
                 dbc.Switch(
                     id="motor-switch",
                     label="On",
-                    value=global_state,
+                    value=session_state,
                     className="mx-auto"  # Add this line
                 ),
                 width="auto",  # Add this line
