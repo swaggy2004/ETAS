@@ -25,13 +25,9 @@ def fetch_latest_data():
 
 def update_motor_state(value):
     try:
-        # Get the ID of the latest record
-        latest_id = fetch_latest_data()['ID'].iloc[0]
-
-        # Update motor state in the database for the latest record
         with engine.connect() as connection:
             connection.execute(
-                "UPDATE datalogs SET motorState = %s WHERE ID = %s", (value, latest_id))
+                "UPDATE datalogs SET motorState = %s ORDER BY collectedDate DESC LIMIT 1;", (value))
     except Exception as e:
         print("Error updating motor state:", e)
 
