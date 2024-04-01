@@ -24,6 +24,7 @@ def fetch_latest_data():
 
 
 def update_motor_state(value):
+    int(value)
     try:
         with engine.connect() as connection:
             connection.execute(
