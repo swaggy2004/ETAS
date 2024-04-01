@@ -25,7 +25,7 @@ def update_motor_state(motor_state: int):
         sql = "UPDATE datalogs SET motorState = ? ORDER BY collectedDate DESC LIMIT 1"
         # Execute the SQL query with the parameter value
         with engine.connect() as conn:
-            conn.execute(sql, (motor_state,))
+            conn.execute(sql, (motor_state,))  # Pass the parameter as a tuple
         print(f"Motor state updated to {motor_state}")
     except Exception as e:
         print("Error updating motor state:", e)
