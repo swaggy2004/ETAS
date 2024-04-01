@@ -18,6 +18,7 @@ def fetch_latest_motor_state():
                 motor_state = row[0]
             else:
                 motor_state = None
+            print(motor_state)
         return bool(motor_state)
     except Exception as e:
         print("Error fetching latest motor state:", e)
@@ -32,11 +33,11 @@ def render(app: Dash) -> dbc.Row:
     def update_motor_switch(n_intervals: int):
         latest_motor_state = fetch_latest_motor_state()
         if latest_motor_state is None:
-            return True
+            return False
         elif latest_motor_state == 1:
             return True
         else:
-            return True
+            return 
 
     return dbc.Row(
         [
