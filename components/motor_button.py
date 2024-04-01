@@ -22,7 +22,7 @@ def fetch_latest_motor_state():
             else:
                 motor_state = None  # Set motor_state to None if no rows were fetched
 
-        return motor_state
+        return bool(motor_state)
 
     except Exception as e:
         print("Error fetching latest motor state:", e)
