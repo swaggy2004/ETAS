@@ -7,22 +7,18 @@ engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
 
-def fetch_latest_data():
+def update_motor_state(motor_state: int):
     try:
-        # Refresh the database connection
-        engine.dispose()
+        # Construct SQL query with a parameter placeholder
+        sql = "UPDATE datalogs SET motorState = %s ORDER BY collectedDate DESC LIMIT 1"
 
-        # Construct SQL query to select the latest record from the database
-        sql = "SELECT * FROM datalogs ORDER BY collectedDate DESC LIMIT 1"
-
-        # Execute the SQL query and load result into a DataFrame
+        # Execute the SQL query with the parameter value
         with engine.connect() as conn:
-            df = pd.read_sql(sql, conn)
+            conn.execute(sql, (motor_state,))
 
-        return df
+        print(f"Motor state updated to {motor_state}")
     except Exception as e:
-        print("Error fetching latest data:", e)
-        return None
+        print("Error updating motor state:", e)
 
 
 def update_motor_state(motor_state: int):
