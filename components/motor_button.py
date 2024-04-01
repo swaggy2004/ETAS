@@ -1,5 +1,6 @@
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
+from dash.dependencies import Input as DashInput, Output as DashOutput, State, MATCH
 import sqlalchemy
 import pandas as pd
 
@@ -29,13 +30,13 @@ def fetch_latest_motor_state():
         return None
 
 
-
 def render(app: Dash) -> dbc.Row:
     @app.callback(
         Output("motor-switch", "label"),
         Input("motor-switch", "value"),
+        Input("interval-component", "n_intervals")
     )
-    def update_motor_switch_label(value: bool) -> str:
+    def update_motor_switch_label(value: bool, n_intervals: int) -> str:
         motor_state = fetch_latest_motor_state()
         return "ON" if motor_state else "OFF"
 
@@ -50,6 +51,11 @@ def render(app: Dash) -> dbc.Row:
                 ),
                 width="auto",
                 className="d-flex justify-content-center align-items-center"
+            ),
+            dcc.Interval(
+                id='interval-component',
+                interval=1*1000,  # in milliseconds
+                n_intervals=0
             )
         ],
         className="justify-content-center align-items-center fs-1 mb-3"
