@@ -16,6 +16,7 @@ def fetch_latest_data():
         # Execute the SQL query and load result into a DataFrame
         df = pd.read_sql(sql, engine)
         state = df.iloc[0]['motorState']
+        print("fetched state: ", state)
         return state
 
     except Exception as e:
