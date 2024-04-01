@@ -38,7 +38,6 @@ def render(app: Dash) -> dbc.Row:
             dbc.Col(
                 dbc.Switch(
                     id="motor-switch",
-                    label="Motor",
                     value=False,
                     className="mx-auto"
                 ),
