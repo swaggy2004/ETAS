@@ -18,7 +18,7 @@ def fetch_latest_motor_state():
             # Get the motorState value from the first (and only) row
             # motor_state = result.fetchone()[0]
 
-        return motor_state
+        return result
 
     except Exception as e:
         print("Error fetching latest motor state:", e)
