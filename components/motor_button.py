@@ -20,6 +20,15 @@ def fetch_latest_data():
     except Exception as e:
         print("Error fetching latest data:", e)
         return None
+    
+def update_data(state):
+    try:
+        sql = f"UPDATE datalogs SET motorState = {state} ORDER BY collectedDate DESC LIMIT 1;"
+        with engine.connect() as conn:
+            conn.execute(sql)
+    except Exception as e:  
+        print("Error: ", e)
+
 
 def render(app: Dash) -> dbc.Row:
     initial_state = fetch_latest_data()
@@ -28,6 +37,7 @@ def render(app: Dash) -> dbc.Row:
         Input("motor-switch", "value"),
     )
     def update_motor_switch_label(value: bool) -> str:
+        update_data(value)
         return "ON" if value else "OFF"
     
     @app.callback(
