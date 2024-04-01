@@ -25,11 +25,14 @@ def fetch_latest_data():
 
 def update_data(state):
     try:
-        sql = text(f"UPDATE datalogs SET motorState = {state} ORDER BY collectedDate DESC LIMIT 1;")
+        # Construct SQL query to update the record with the latest collectedDate
+        sql = text(
+            "UPDATE datalogs SET motorState = :state WHERE collectedDate = (SELECT MAX(collectedDate) FROM datalogs)")
         with engine.connect() as conn:
-            conn.execute(sql)
+            conn.execute(sql, state=state)  # Pass the state as a parameter
     except Exception as e:
         print("Error: ", e)
+
 
 
 def render(app: Dash) -> dbc.Row:
