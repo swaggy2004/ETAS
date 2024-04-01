@@ -75,20 +75,17 @@ def start_listening():
                     if data_processing_status is None:
                         response_data = {'status': 'No data processed yet'}
                     else:
-                        response_data = {
-                            'status': 'Success', "motorState": state if data_processing_status else 'Error'}
+                        response_data = {'status': 'Success', "motorState": state if data_processing_status else 'Error'}
 
                     # Convert int64 to int for motorState
                     if "motorState" in response_data:
-                        response_data["motorState"] = int(
-                            response_data["motorState"])
+                        response_data["motorState"] = int(response_data["motorState"])
 
                     # Convert the response data to JSON format
                     response_json = json.dumps(response_data)
 
                     # Construct the HTTP response
-                    response = f"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {
-                        len(response_json)}\r\n\r\n{response_json}"
+                    response = f"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {len(response_json)}\r\n\r\n{response_json}"
 
                     # Send the response to the client
                     client_socket.sendall(response.encode('utf-8'))
