@@ -31,14 +31,14 @@ def fetch_latest_motor_state():
 
 
 def render(app: Dash) -> dbc.Row:
+    latest_motor_state = fetch_latest_motor_state()
+
     @app.callback(
         Output("motor-switch", "label"),
-        Input("motor-switch", "value"),
         Input("interval-component", "n_intervals")
     )
-    def update_motor_switch_label(value: bool, n_intervals: int) -> str:
-        motor_state = fetch_latest_motor_state()
-        return "ON" if motor_state else "OFF"
+    def update_motor_switch_label(n_intervals: int) -> str:
+        return "ON" if latest_motor_state else "OFF"
 
     return dbc.Row(
         [
@@ -46,7 +46,7 @@ def render(app: Dash) -> dbc.Row:
                 dbc.Switch(
                     id="motor-switch",
                     label="On",
-                    value=False,
+                    value=latest_motor_state,
                     className="mx-auto"
                 ),
                 width="auto",
