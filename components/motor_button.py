@@ -36,9 +36,13 @@ def render(app: Dash) -> dbc.Row:
         Output("motor-switch", "label"),
         Input("motor-switch", "value"),
     )
-    def update_motor_switch_label(value: int) -> str:
-        print(value)
-        update_data(int(value))
+    def update_motor_switch_label(value: bool) -> str:
+        if value:
+            state = 1
+        else:
+            state = 0
+        print(state)
+        update_data(state)
         return "ON" if value else "OFF"
     
     @app.callback(
