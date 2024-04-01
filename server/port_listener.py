@@ -67,11 +67,11 @@ def start_listening():
                         data_processing_status = False  # Invalid POST request format
                 elif b"GET /" in data:
                     # Handle GET request
-                    ms = ms.fetch_motor_state()
+                    state = ms.fetch_motor_state()
                     if data_processing_status is None:
                         response_data = {'status': 'No data processed yet'}
                     else:
-                        response_data = {'status': 'Success', "motorState": ms if data_processing_status else 'Error'}
+                        response_data = {'status': 'Success', "motorState": state if data_processing_status else 'Error'}
 
                     response_json = json.dumps(response_data)
                     response = f"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {len(response_json)}\r\n\r\n{response_json}"
