@@ -35,7 +35,7 @@ def render(app: Dash) -> dbc.Row:
                 dbc.Switch(
                     id="motor-switch",
                     label="On",
-                    value=initial_state,
+                    value=int(initial_state),
                     className="mx-auto"  # Add this line
                 ),
                 width="auto",  # Add this line
