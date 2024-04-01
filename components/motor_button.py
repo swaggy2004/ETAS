@@ -29,6 +29,14 @@ def render(app: Dash) -> dbc.Row:
     )
     def update_motor_switch_label(value: bool) -> str:
         return "ON" if value else "OFF"
+    
+    @app.callback(
+        Output("motor-switch", "value"),
+        Input("interval-component", "n_intervals"),
+    )
+    def update_motor_switch_value(n):
+        state = fetch_latest_data()
+        return int(state)
     return dbc.Row(
         [
             dbc.Col(
@@ -40,7 +48,12 @@ def render(app: Dash) -> dbc.Row:
                 ),
                 width="auto",  # Add this line
                 className="d-flex justify-content-center align-items-center"  # Add this line
-            )
+            ),
+            dcc.Interval(
+                id='interval-component',
+                interval=3*1000,  # Update every 1 second
+                n_intervals=0
+            ),
         ],
         className="justify-content-center align-items-center fs-1 mb-3"
     )
