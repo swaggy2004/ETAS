@@ -28,12 +28,10 @@ def extracting_values(data):
         # Check if all values are present
         if ph is not None and turbidity is not None and tds is not None and temp is not None and longitude is not None and latitude is not None and motor_state != -1:
             # Print the extracted values
-            print(f"pH: {ph}, temperature: {temp}, TDS: {tds}, turbidity: {
-                  turbidity}, longitude: {longitude}, latitude: {latitude}, motorState: {motor_state}")
+            print(f"pH: {ph}, temperature: {temp}, TDS: {tds}, turbidity: {turbidity}, longitude: {longitude}, latitude: {latitude}, motorState: {motor_state}")
 
             # Store the data in the database
-            send_to_db.store_data(ph, tds, temp, turbidity,
-                                  longitude, latitude, motor_state)
+            send_to_db.store_data(ph, tds, temp, turbidity,longitude, latitude, motor_state)
             print("All data sent to the database successfully\n")
             srd.__update_view__()
             data_processing_status = True  # Data processed successfully
@@ -56,8 +54,7 @@ def start_listening():
         while True:
             print("\nWaiting for a connection...\n")
             client_socket, client_address = server_socket.accept()
-            print(f"\nConnection from {
-                  client_address} has been established!\n")
+            print(f"\nConnection from {client_address} has been established!\n")
             data = client_socket.recv(1024)
             if data:
                 # Print received data for debugging
