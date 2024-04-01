@@ -29,9 +29,11 @@ def update_data(state):
         sql = text(
             "UPDATE datalogs SET motorState = :state WHERE collectedDate = (SELECT MAX(collectedDate) FROM datalogs)")
         with engine.connect() as conn:
-            conn.execute(sql, state=state)  # Pass the state as a parameter
+            # Pass parameters as a dictionary
+            conn.execute(sql, {"state": state})
     except Exception as e:
         print("Error: ", e)
+
 
 
 
