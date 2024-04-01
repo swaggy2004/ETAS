@@ -15,14 +15,19 @@ def fetch_latest_motor_state():
         # Execute the SQL query and fetch the result
         with engine.connect() as connection:
             result = connection.execute(sql)
-            # Get the motorState value from the first (and only) row
-            # motor_state = result.fetchone()[0]
+            row = result.fetchone()  # Fetch the first (and only) row
+            if row:  # Check if a row was fetched
+                # Extract motorState value from the first column
+                motor_state = row[0]
+            else:
+                motor_state = None  # Set motor_state to None if no rows were fetched
 
-        return result
+        return motor_state
 
     except Exception as e:
         print("Error fetching latest motor state:", e)
         return None
+
 
 
 def render(app: Dash) -> dbc.Row:
