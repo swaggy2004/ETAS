@@ -13,7 +13,6 @@ def fetch_latest_data():
         sql = "SELECT * FROM datalogs ORDER BY collectedDate DESC LIMIT 1"
         # Execute the SQL query and load result into a DataFrame
         df = pd.read_sql(sql, engine)
-        print(df)
         return df
     except Exception as e:
         print("Error fetching latest data:", e)
@@ -23,9 +22,9 @@ def fetch_latest_data():
 def render(app: Dash) -> dbc.Row:
     @app.callback(
         Output("motor-switch", "value"),
-        Input("motor-switch", "n_clicks"),
+        Input("motor-switch", "value"),
     )
-    def update_motor_switch_value(n_clicks: int) -> bool:
+    def update_motor_switch_value(switch_value: bool) -> bool:
         # Fetch the latest data from the database
         latest_data = fetch_latest_data()
 
