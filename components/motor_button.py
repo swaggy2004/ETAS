@@ -2,10 +2,12 @@ from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import sqlalchemy
 import pandas as pd
+from flask import current_app
 
-# Database connection
+# Create a global connection object
 engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
+conn = engine.connect()
 
 
 def fetch_latest_data():
@@ -17,27 +19,25 @@ def fetch_latest_data():
         df = pd.read_sql(sql, engine)
 
         return df
-
     except Exception as e:
         print("Error fetching latest data:", e)
         return None
 
 
-def update_motor_state(value):
+def update_motor_state(value, connection):
     try:
-        with engine.connect() as connection:
-            connection.execute(
-                "UPDATE datalogs SET motorState = ? ORDER BY collectedDate DESC LIMIT 1;",
-                (value,)
-            )
+        connection.execute(
+            "UPDATE datalogs SET motorState = ? ORDER BY collectedDate DESC LIMIT 1;",
+            (value,)
+        )
     except Exception as e:
         print("Error updating motor state:", e)
-
 
 
 def render(app: Dash) -> dbc.Row:
     # Initial fetching of data
     latest_data = fetch_latest_data()
+
     initial_motor_state = latest_data['motorState'].iloc[0] if latest_data is not None and len(
         latest_data) > 0 else 0
 
@@ -55,7 +55,8 @@ def render(app: Dash) -> dbc.Row:
     def update_motor_state_and_switch(label: str) -> bool:
         # Update motor state in the database based on switch label
         value = 1 if label == "ON" else 0
-        update_motor_state(value)
+        update_motor_state(value, conn)  # Pass the global connection object
+
         # Return the new value for the switch
         return value
 
@@ -80,3 +81,4 @@ def render(app: Dash) -> dbc.Row:
         ],
         className="justify-content-center align-items-center fs-1 mb-3"
     )
+
