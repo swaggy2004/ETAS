@@ -48,7 +48,7 @@ def render(app: Dash) -> dbc.Row:
 
     @app.callback(
         Output("motor-switch", "value"),
-        Input("motor-switch", "label"),
+        Input("switch-label", "children"),
     )
     def update_motor_state_and_switch(label: str) -> bool:
         # Update motor state in the database based on switch label
@@ -60,14 +60,18 @@ def render(app: Dash) -> dbc.Row:
     return dbc.Row(
         [
             dbc.Col(
-                dbc.Switch(
-                    id="motor-switch",
-                    # Set initial label based on fetched data
-                    label="ON" if initial_motor_state else "OFF",
-                    # Set initial value based on fetched data
-                    value=bool(initial_motor_state),
-                    className="mx-auto"  # Add this line
-                ),
+                [
+                    dbc.Switch(
+                        id="motor-switch",
+                        # Set initial label based on fetched data
+                        label="ON" if initial_motor_state else "OFF",
+                        # Set initial value based on fetched data
+                        value=bool(initial_motor_state),
+                        className="mx-auto"  # Add this line
+                    ),
+                    html.Div(id="switch-label", style={"display": "none"},
+                             children="ON" if initial_motor_state else "OFF")
+                ],
                 width="auto",  # Add this line
                 className="d-flex justify-content-center align-items-center"  # Add this line
             )
