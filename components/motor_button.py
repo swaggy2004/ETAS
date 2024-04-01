@@ -27,9 +27,10 @@ def update_motor_state(value):
     try:
         with engine.connect() as connection:
             connection.execute(
-                "UPDATE datalogs SET motorState = %s ORDER BY collectedDate DESC LIMIT 1;", (value))
+                "UPDATE datalogs SET motorState = %s ORDER BY collectedDate DESC LIMIT 1;", (value,))
     except Exception as e:
         print("Error updating motor state:", e)
+
 
 
 def render(app: Dash) -> dbc.Row:
