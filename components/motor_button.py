@@ -16,13 +16,13 @@ def fetch_latest_data():
         # Execute the SQL query and load result into a DataFrame
         df = pd.read_sql(sql, engine)
         state = df.iloc[0]['motorState']
-        print("fetched state: ", state)
+        print("Fetched state:", state)
         return state
 
     except Exception as e:
         print("Error fetching latest data:", e)
         return None
-    
+
 
 def update_data(state):
     try:
@@ -34,7 +34,7 @@ def update_data(state):
             conn.execute(sql, {"state": state})
             conn.commit()
     except Exception as e:
-        print("Error: ", e)
+        print("Error updating data:", e)
 
 
 def render(app: Dash) -> dbc.Row:
@@ -43,12 +43,8 @@ def render(app: Dash) -> dbc.Row:
         Input("motor-switch", "value"),
     )
     def update_motor_switch_label(value: bool) -> str:
-        if value:
-            state = 1
-        else:
-            state = 0
-        print(state)
-        session_state = fetch_latest_data()
+        state = 1 if value else 0
+        print("State:", state)
         update_data(state)
         return "ON" if value else "OFF"
 
@@ -61,10 +57,10 @@ def render(app: Dash) -> dbc.Row:
                     id="motor-switch",
                     label="On",
                     value=session_state,
-                    className="mx-auto"  # Add this line
+                    className="mx-auto"
                 ),
-                width="auto",  # Add this line
-                className="d-flex justify-content-center align-items-center"  # Add this line
+                width="auto",
+                className="d-flex justify-content-center align-items-center"
             ),
         ],
         className="justify-content-center align-items-center fs-1 mb-3"
