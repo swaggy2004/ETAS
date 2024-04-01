@@ -87,7 +87,7 @@ def render(app: Dash) -> imports.dbc.Row:
             ),
             dcc.Interval(
                 id='interval-component',
-                interval=3*1000,  # Update every 1 second
+                interval=3*10000,  # Update every 1 second
                 n_intervals=0
             ),
         ],
