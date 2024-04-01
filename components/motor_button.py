@@ -2,84 +2,75 @@ from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import sqlalchemy
 import pandas as pd
-from sqlalchemy import text
 
+# Database connection
 engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
 
-def update_motor_state(motor_state: int):
+def fetch_latest_data():
     try:
-        # Construct the SQL query
-        sql = text(
-            "UPDATE datalogs SET motorState = :motor_state ORDER BY collectedDate DESC LIMIT 1")
+        # Construct SQL query to select the latest record from the database
+        sql = "SELECT * FROM datalogs ORDER BY collectedDate DESC LIMIT 1"
 
-        # Execute the SQL query with the parameter value
-        with engine.connect() as conn:
-            conn.execute(sql, {"motor_state": motor_state})
+        # Execute the SQL query and load result into a DataFrame
+        df = pd.read_sql(sql, engine)
 
-        print(f"Motor state updated to {motor_state}")
+        return df
+
+    except Exception as e:
+        print("Error fetching latest data:", e)
+        return None
+
+
+def update_motor_state(value):
+    try:
+        # Update motor state in the database
+        with engine.connect() as connection:
+            connection.execute(
+                "INSERT INTO datalogs (motorState) VALUES (%s)", value)
     except Exception as e:
         print("Error updating motor state:", e)
 
 
 def render(app: Dash) -> dbc.Row:
-    def fetch_latest_data():
-        try:
-            # Refresh the database connection
-            engine.dispose()
+    # Initial fetching of data
+    latest_data = fetch_latest_data()
+    initial_motor_state = latest_data['motorState'].iloc[0] if latest_data is not None and len(
+        latest_data) > 0 else 0
 
-            # Construct SQL query to select the latest record from the database
-            sql = "SELECT * FROM datalogs ORDER BY collectedDate DESC LIMIT 1"
-
-            # Execute the SQL query and load result into a DataFrame
-            with engine.connect() as conn:
-                df = pd.read_sql(sql, conn)
-
-            return df
-        except Exception as e:
-            print("Error fetching latest data:", e)
-            return None
+    @app.callback(
+        Output("motor-switch", "label"),
+        Input("motor-switch", "value"),
+    )
+    def update_motor_switch_label(value: bool) -> str:
+        return "ON" if value else "OFF"
 
     @app.callback(
         Output("motor-switch", "value"),
-        Input("motor-switch", "value"),
+        Input("motor-switch", "label"),
     )
-    def update_motor_switch_value(switch_value: bool) -> bool:
-        # Fetch the latest data from the database
-        latest_data = fetch_latest_data()
-
-        # If there is data available, check the motorState value
-        if not latest_data.empty:
-            motor_state = latest_data['motorState'].iloc[0]
-            if motor_state == 1:
-                # If motorState is 1, set the switch to True (ON)
-                switch_value = True
-            else:
-                # If motorState is 0, set the switch to False (OFF)
-                switch_value = False
-        else:
-            # If no data is available, set the switch to False (OFF) as a default
-            switch_value = False
-
-        # Update the motorState value in the database
-        motor_state = int(switch_value)
-        update_motor_state(motor_state)
-
-        return switch_value
+    def update_motor_state_and_switch(label: str) -> bool:
+        # Update motor state in the database based on switch label
+        value = 1 if label == "ON" else 0
+        update_motor_state(value)
+        # Return the new value for the switch
+        return value
 
     return dbc.Row(
         [
             dbc.Col(
                 dbc.Switch(
                     id="motor-switch",
-                    label="On",
-                    value=False,
-                    className="mx-auto",
+                    # Set initial label based on fetched data
+                    label="ON" if initial_motor_state else "OFF",
+                    # Set initial value based on fetched data
+                    value=bool(initial_motor_state),
+                    className="mx-auto"  # Add this line
                 ),
-                width="auto",
-                className="d-flex justify-content-center align-items-center",
+                width="auto",  # Add this line
+                className="d-flex justify-content-center align-items-center"  # Add this line
             )
         ],
-        className="justify-content-center align-items-center fs-1 mb-3",
+        className="justify-content-center align-items-center fs-1 mb-3"
     )
