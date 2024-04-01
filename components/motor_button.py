@@ -9,10 +9,16 @@ engine = sqlalchemy.create_engine(
 
 def fetch_latest_data():
     try:
+        # Refresh the database connection
+        engine.dispose()
+
         # Construct SQL query to select the latest record from the database
         sql = "SELECT * FROM datalogs ORDER BY collectedDate DESC LIMIT 1"
+
         # Execute the SQL query and load result into a DataFrame
-        df = pd.read_sql(sql, engine)
+        with engine.connect() as conn:
+            df = pd.read_sql(sql, conn)
+
         return df
     except Exception as e:
         print("Error fetching latest data:", e)
