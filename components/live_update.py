@@ -4,8 +4,7 @@ from dash.dependencies import Output, Input
 import sqlalchemy
 import pandas as pd
 
-engine = sqlalchemy.create_engine(
-    'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
+engine = sqlalchemy.create_engine('mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
 
 def fetch_latest_data():
