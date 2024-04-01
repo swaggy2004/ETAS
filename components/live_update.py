@@ -11,7 +11,7 @@ def fetch_latest_data():
         sql = "SELECT * FROM datalogs ORDER BY collectedDate DESC LIMIT 1"
         # Execute the SQL query and load result into a DataFrame
         df = pd.read_sql(sql, engine)
-        print(df)
+        print(df);
         return df
     except Exception as e:
         print("Error fetching latest data:", e)
