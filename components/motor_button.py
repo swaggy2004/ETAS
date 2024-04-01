@@ -33,7 +33,6 @@ def update_data(state):
 
 
 def render(app: Dash) -> dbc.Row:
-    initial_state = fetch_latest_data()
     @app.callback(
         Output("motor-switch", "label"),
         Input("motor-switch", "value"),
@@ -60,7 +59,7 @@ def render(app: Dash) -> dbc.Row:
                 dbc.Switch(
                     id="motor-switch",
                     label="On",
-                    value=int(initial_state),
+                    value=False,
                     className="mx-auto"  # Add this line
                 ),
                 width="auto",  # Add this line
