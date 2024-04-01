@@ -48,7 +48,12 @@ def render(app: Dash) -> dbc.Row:
         update_data(state)
         return "ON" if value else "OFF"
 
-    session_state = fetch_latest_data()
+    @app.callback(
+        Output("motor-switch", "value"),
+        Input("interval-component", "n_intervals")
+    )
+    def update_switch_value(_):
+        return fetch_latest_data()
 
     return dbc.Row(
         [
@@ -56,11 +61,15 @@ def render(app: Dash) -> dbc.Row:
                 dbc.Switch(
                     id="motor-switch",
                     label="On",
-                    value=session_state,
                     className="mx-auto"
                 ),
                 width="auto",
                 className="d-flex justify-content-center align-items-center"
+            ),
+            dcc.Interval(
+                id='interval-component',
+                interval=3*1000,  # Update every 3 seconds
+                n_intervals=0
             ),
         ],
         className="justify-content-center align-items-center fs-1 mb-3"
