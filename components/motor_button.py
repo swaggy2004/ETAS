@@ -21,12 +21,11 @@ def fetch_latest_data():
 
 def update_motor_state(motor_state: int):
     try:
-        # Construct SQL query to update the motorState value
-        sql = f"UPDATE datalogs SET motorState = {
-            motor_state} ORDER BY collectedDate DESC LIMIT 1"
-        # Execute the SQL query
+        # Construct SQL query with a parameter placeholder
+        sql = "UPDATE datalogs SET motorState = ? ORDER BY collectedDate DESC LIMIT 1"
+        # Execute the SQL query with the parameter value
         with engine.connect() as conn:
-            conn.execute(sql)
+            conn.execute(sql, (motor_state,))
         print(f"Motor state updated to {motor_state}")
     except Exception as e:
         print("Error updating motor state:", e)
