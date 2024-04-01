@@ -31,7 +31,12 @@ def render(app: Dash) -> dbc.Row:
     )
     def update_motor_switch(n_intervals: int):
         latest_motor_state = fetch_latest_motor_state()
-        return latest_motor_state
+        if latest_motor_state is None:
+            return False
+        elif latest_motor_state == 1:
+            return True
+        else:
+            return False
 
     return dbc.Row(
         [
