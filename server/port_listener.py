@@ -49,7 +49,7 @@ def start_listening():
 
     try:
         while True:
-            print("Waiting for a connection...\n")
+            print("\nWaiting for a connection...\n")
             client_socket, client_address = server_socket.accept()
             print(f"\nConnection from {client_address} has been established!\n")
             data = client_socket.recv(1024)
