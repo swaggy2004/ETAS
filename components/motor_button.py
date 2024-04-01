@@ -19,6 +19,19 @@ def fetch_latest_data():
         return None
 
 
+def update_motor_state(motor_state: int):
+    try:
+        # Construct SQL query to update the motorState value
+        sql = f"UPDATE datalogs SET motorState = {
+            motor_state} ORDER BY collectedDate DESC LIMIT 1"
+        # Execute the SQL query
+        with engine.connect() as conn:
+            conn.execute(sql)
+        print(f"Motor state updated to {motor_state}")
+    except Exception as e:
+        print("Error updating motor state:", e)
+
+
 def render(app: Dash) -> dbc.Row:
     @app.callback(
         Output("motor-switch", "value"),
@@ -33,13 +46,19 @@ def render(app: Dash) -> dbc.Row:
             motor_state = latest_data['motorState'].iloc[0]
             if motor_state == 1:
                 # If motorState is 1, set the switch to True (ON)
-                return True
+                switch_value = True
             else:
                 # If motorState is 0, set the switch to False (OFF)
-                return False
+                switch_value = False
         else:
             # If no data is available, set the switch to False (OFF) as a default
-            return False
+            switch_value = False
+
+        # Update the motorState value in the database
+        motor_state = int(switch_value)
+        update_motor_state(motor_state)
+
+        return switch_value
 
     return dbc.Row(
         [
