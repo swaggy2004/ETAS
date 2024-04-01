@@ -25,8 +25,7 @@ def fetch_latest_data():
 
 def update_data(state):
     try:
-        sql = text(f"UPDATE datalogs SET motorState = {
-                   state} ORDER BY collectedDate DESC LIMIT 1;")
+        sql = text(f"UPDATE datalogs SET motorState = {state} ORDER BY collectedDate DESC LIMIT 1;")
         with engine.connect() as conn:
             conn.execute(sql)
     except Exception as e:
