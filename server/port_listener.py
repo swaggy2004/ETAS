@@ -73,10 +73,16 @@ def start_listening():
                     else:
                         response_data = {'status': 'Success', "motorState": state if data_processing_status else 'Error'}
 
+                    # Convert the response data to JSON format
                     response_json = json.dumps(response_data)
+
+                    # Construct the HTTP response
                     response = f"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {len(response_json)}\r\n\r\n{response_json}"
+
+                    # Send the response to the client
                     client_socket.sendall(response.encode('utf-8'))
                     data_processing_status = None
+
 
                 client_socket.close()
                 time.sleep(5)
