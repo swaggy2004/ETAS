@@ -33,6 +33,7 @@ def update_data(state):
 
 
 def render(app: Dash) -> dbc.Row:
+    global_state = fetch_latest_data()
     @app.callback(
         Output("motor-switch", "label"),
         Input("motor-switch", "value"),
@@ -43,32 +44,21 @@ def render(app: Dash) -> dbc.Row:
         else:
             state = 0
         print(state)
+        global_state = state
         update_data(state)
         return "ON" if value else "OFF"
     
-    @app.callback(
-        Output("motor-switch", "value"),
-        Input("interval-component", "n_intervals"),
-    )
-    def update_motor_switch_value(n):
-        state = fetch_latest_data()
-        return int(state)
     return dbc.Row(
         [
             dbc.Col(
                 dbc.Switch(
                     id="motor-switch",
                     label="On",
-                    value=False,
+                    value=global_state,
                     className="mx-auto"  # Add this line
                 ),
                 width="auto",  # Add this line
                 className="d-flex justify-content-center align-items-center"  # Add this line
-            ),
-            dcc.Interval(
-                id='interval-component',
-                interval=3*1000,  # Update every 1 second
-                n_intervals=0
             ),
         ],
         className="justify-content-center align-items-center fs-1 mb-3"
