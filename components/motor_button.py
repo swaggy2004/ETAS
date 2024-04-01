@@ -1,6 +1,7 @@
 from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import sqlalchemy
+from sqlalchemy.sql import text
 import pandas as pd
 
 engine = sqlalchemy.create_engine(
@@ -21,12 +22,14 @@ def fetch_latest_data():
         print("Error fetching latest data:", e)
         return None
     
+
 def update_data(state):
     try:
-        sql = f"UPDATE datalogs SET motorState = {state} ORDER BY collectedDate DESC LIMIT 1;"
+        sql = text(f"UPDATE datalogs SET motorState = {
+                   state} ORDER BY collectedDate DESC LIMIT 1;")
         with engine.connect() as conn:
             conn.execute(sql)
-    except Exception as e:  
+    except Exception as e:
         print("Error: ", e)
 
 
