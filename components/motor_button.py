@@ -31,6 +31,7 @@ def update_data(state):
         with engine.connect() as conn:
             # Pass parameters as a dictionary
             conn.execute(sql, {"state": state})
+            conn.commit()
     except Exception as e:
         print("Error: ", e)
 
