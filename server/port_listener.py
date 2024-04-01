@@ -21,7 +21,7 @@ def extracting_values(data):
         temp = data_dict.get('temperature')
         longitude = data_dict.get('longitude')
         latitude = data_dict.get('latitude')
-        motor_state = data_dict.get('motorState')
+        motor_state = int(data_dict.get('motorState'))
 
         # Check if all values are present
         if ph is not None and turbidity is not None and tds is not None and temp is not None and longitude is not None and latitude is not None and motor_state is not None:
