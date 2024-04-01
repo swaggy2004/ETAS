@@ -16,7 +16,7 @@ def fetch_latest_motor_state():
         with engine.connect() as connection:
             result = connection.execute(sql)
             # Get the motorState value from the first (and only) row
-            motor_state = result.fetchone()[0]
+            # motor_state = result.fetchone()[0]
 
         return motor_state
 
