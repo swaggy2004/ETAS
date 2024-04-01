@@ -34,9 +34,9 @@ def render(app: Dash) -> dbc.Row:
         if latest_motor_state is None:
             return False
         elif latest_motor_state == 1:
-            return True
-        else:
             return False
+        else:
+            return True
 
     return dbc.Row(
         [
