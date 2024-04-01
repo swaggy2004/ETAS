@@ -8,6 +8,7 @@ import json
 # Variable to store the status of data processing
 data_processing_status = None
 
+
 def extracting_values(data):
     global data_processing_status
     try:
@@ -21,15 +22,18 @@ def extracting_values(data):
         temp = data_dict.get('temperature')
         longitude = data_dict.get('longitude')
         latitude = data_dict.get('latitude')
+        # Default value -1 if motorState is not present
         motor_state = int(data_dict.get('motorState'))
 
         # Check if all values are present
-        if ph is not None and turbidity is not None and tds is not None and temp is not None and longitude is not None and latitude is not None and motor_state is not None:
+        if ph is not None and turbidity is not None and tds is not None and temp is not None and longitude is not None and latitude is not None and motor_state != -1:
             # Print the extracted values
-            print(f"pH: {ph}, temperature: {temp}, TDS: {tds}, turbidity: {turbidity}, longitude: {longitude}, latitude: {latitude}, motorState: {motor_state}")
+            print(f"pH: {ph}, temperature: {temp}, TDS: {tds}, turbidity: {
+                  turbidity}, longitude: {longitude}, latitude: {latitude}, motorState: {motor_state}")
 
             # Store the data in the database
-            send_to_db.store_data(ph, tds, temp, turbidity, longitude, latitude, motor_state)
+            send_to_db.store_data(ph, tds, temp, turbidity,
+                                  longitude, latitude, motor_state)
             print("All data sent to the database successfully\n")
             srd.__update_view__()
             data_processing_status = True  # Data processed successfully
@@ -39,6 +43,7 @@ def extracting_values(data):
     except Exception as e:
         print("\nError occurred while extracting and processing data:", e)
         data_processing_status = False  # Error occurred while processing data
+
 
 def start_listening():
     global data_processing_status
@@ -51,10 +56,12 @@ def start_listening():
         while True:
             print("\nWaiting for a connection...\n")
             client_socket, client_address = server_socket.accept()
-            print(f"\nConnection from {client_address} has been established!\n")
+            print(f"\nConnection from {
+                  client_address} has been established!\n")
             data = client_socket.recv(1024)
             if data:
-                print("Received data:", data)  # Print received data for debugging
+                # Print received data for debugging
+                print("Received data:", data)
 
                 # Check if it's a GET or POST request
                 if b"POST /" in data:
@@ -71,24 +78,24 @@ def start_listening():
                     if data_processing_status is None:
                         response_data = {'status': 'No data processed yet'}
                     else:
-                        response_data = {'status': 'Success', "motorState": state if data_processing_status else 'Error'}
+                        response_data = {
+                            'status': 'Success', "motorState": state if data_processing_status else 'Error'}
 
                     # Convert int64 to int for motorState
                     if "motorState" in response_data:
-                        response_data["motorState"] = int(response_data["motorState"])
+                        response_data["motorState"] = int(
+                            response_data["motorState"])
 
                     # Convert the response data to JSON format
                     response_json = json.dumps(response_data)
 
                     # Construct the HTTP response
-                    response = f"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {len(response_json)}\r\n\r\n{response_json}"
+                    response = f"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {
+                        len(response_json)}\r\n\r\n{response_json}"
 
                     # Send the response to the client
                     client_socket.sendall(response.encode('utf-8'))
                     data_processing_status = None
-
-
-
 
                 client_socket.close()
                 time.sleep(5)
@@ -96,6 +103,7 @@ def start_listening():
     except KeyboardInterrupt:
         print("\nClosing server socket...")
         server_socket.close()
+
 
 if __name__ == "__main__":
     start_listening()
