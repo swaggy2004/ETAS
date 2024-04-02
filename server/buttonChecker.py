@@ -4,7 +4,7 @@ import pandas as pd
 engine = sqlalchemy.create_engine(
     'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
 
-def fetch_motor_state(newState):
+def state_checker(newState):
     try:
         # Construct SQL query to select the latest record from the database
         sql = "SELECT motorState FROM datalogs ORDER BY collectedDate DESC LIMIT 1 OFFSET 1;"
