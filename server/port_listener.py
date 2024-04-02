@@ -76,11 +76,6 @@ def start_listening():
                         response_data = {'status': 'No data processed yet', "motorState": state}
                     else:
                         response_data = {'status': 'Success', "motorState": state if data_processing_status else 'Error'}
-
-                    # Convert int64 to int for motorState
-                    if "motorState" in response_data:
-                        response_data["motorState"] = int(response_data["motorState"])
-
                     # Convert the response data to JSON format
                     response_json = json.dumps(response_data)
 
