@@ -89,8 +89,6 @@ def start_listening():
 
                     # Send the response to the client
                     client_socket.sendall(response.encode('utf-8'))
-                    data_processing_status = None
-
                 client_socket.close()
                 time.sleep(5)
 
