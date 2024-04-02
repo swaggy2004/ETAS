@@ -7,7 +7,7 @@ import json
 import motorState
 
 # Variable to store the status of data processing
-data_processing_status = None
+data_processing_status = "Error"
 
 
 def extracting_values(data):
