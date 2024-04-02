@@ -73,7 +73,7 @@ def start_listening():
                     # Handle GET request
                     state = ms.fetch_motor_state()
                     if data_processing_status is None:
-                        response_data = {'status': 'No data processed yet', "motorState": state}
+                        response_data = {"motorState": state, 'status': 'No data processed yet' }
                     else:
                         response_data = {'status': 'Success', "motorState": state if data_processing_status else 'Error'}
                     # Convert the response data to JSON format
