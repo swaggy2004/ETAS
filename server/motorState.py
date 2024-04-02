@@ -13,10 +13,6 @@ def fetch_motor_state():
         # Execute the SQL query and load result into a DataFrame
         df = pd.read_sql(sql, engine)
         state = df.iloc[0]['motorState']
-        if (state == 0):
-            state = "OFF"
-        else:
-            state = "ON"
         print("Fetched state:", state)
         return state
 
