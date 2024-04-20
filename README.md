@@ -47,7 +47,7 @@ The GUI provides users with an interactive dashboard featuring real-time updates
 
 This repository contains the following files and directories:
 
-- This directory houses the Arduino code responsible for sensor integration, data collection, and communication with the server.
-- This directory includes the server-side code, such as the port listener and the Plotly dashboard implementation.
+-  `arduino/`: This directory houses the Arduino code responsible for sensor integration, data collection, and communication with the server.
+-  `server-side/`: This directory includes the server-side code, such as the port listener and the Plotly dashboard implementation.
 
 By combining hardware integration, data transmission, server infrastructure, and data analysis and visualization, ETAS offers a comprehensive solution for monitoring and managing water quality in real-time, enabling proactive measures to protect and preserve water resources.
