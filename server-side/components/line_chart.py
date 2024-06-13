@@ -103,7 +103,7 @@ def render(app: Dash) -> dbc.Row:
         fig4 = px.area(processed_df, x=processed_df.index,
                        y="turbidityValue", title=val + " Average of Turbidity", markers="true")
 
-        fig1.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
+        fig1.update_layout(paper_bgcolor="rgb(205, 213, 228)")
         fig2.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
         fig3.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
         fig4.update_layout(paper_bgcolor="rgba(0, 0, 0, 0)")
