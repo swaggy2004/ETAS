@@ -112,10 +112,13 @@ def render(app: Dash) -> dbc.Row:
             if val == "Daily":
                 fig.update_layout(xaxis_title="Hour of the Day", yaxis_title=y_title)
                 fig.update_yaxes(rangemode="tozero")
+                fig.update_xaxes(rangemode="tozero")
             elif val == "Weekly":
                 fig.update_layout(xaxis_title="Day of the Week", yaxis_title=y_title)
+                fig.update_yaxes(rangemode="tozero")
             elif val == "Monthly":
                 fig.update_layout(xaxis_title="Week of the Month", yaxis_title=y_title)
+                fig.update_yaxes(rangemode="tozero")
 
         return fig1, fig2, fig3, fig4
     # Return Dash app layout
