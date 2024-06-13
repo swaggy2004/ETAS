@@ -5,8 +5,6 @@ import pandas as pd
 import sqlalchemy
 
 # Function to retrieve data from the database
-
-
 def retrieve_data():
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://python:python123!@localhost:3306/ETAS_IOT')
@@ -16,8 +14,6 @@ def retrieve_data():
     return df
 
 # Calculate water purity index based on sensor data
-
-
 def calculate_purity(df):
     # Normalize sensor readings to a scale of 0 to 1
     df['normalized_ph'] = (df['phValue'] - df['phValue'].min()) / \
@@ -37,8 +33,6 @@ def calculate_purity(df):
     return df[['collectedDate', 'latitude', 'longitude', 'purityIndex']]
 
 # Function to create the heatmap
-
-
 def create_heatmap(df):
     # Get the latest longitude and latitude
     latest_location = df[['latitude', 'longitude']].iloc[-1]
@@ -57,8 +51,6 @@ def create_heatmap(df):
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Function to render the map component
-
-
 def render_map(app: Dash) -> dbc.Row:
     df = retrieve_data()
     df = calculate_purity(df)

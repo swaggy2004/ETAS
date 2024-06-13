@@ -74,6 +74,10 @@ def process_data(df, frequency):
         # Set 'collectedDate' as index and drop other columns
         new_df.set_index('collectedDate', inplace=True)
         new_df = new_df.resample('M').mean()  # Resample to get monthly average
+
+        # Extract month from the index and set it as the new index
+        new_df.index = new_df.index.month
+
         return new_df
 
 
