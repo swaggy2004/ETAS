@@ -46,6 +46,8 @@ def render(app: Dash) -> dbc.Row:
         state = 1 if value else 0
         print("State:", state)
         update_data(state)
+        if state not in [0, 1]:
+            return "OFF"
         return "ON" if value else "OFF"
 
     @app.callback(
