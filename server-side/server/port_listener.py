@@ -75,6 +75,7 @@ def start_listening():
                     if data_processing_status is None:
                         response_data = {'status': 'None' }
                     else:
+                        motor_state = motorState.fetch_motor_state()
                         response_data = {'status': 'Success', "motorState": motor_state if data_processing_status else 'Error'}
                     # Convert the response data to JSON format
                     response_json = json.dumps(response_data)
