@@ -23,6 +23,7 @@ def render(app: Dash) -> imports.dbc.Row:
                     inline=True,
                 ),
                 className="radio-group text-center",
+                xs=12,
             ),
         ]
     )
