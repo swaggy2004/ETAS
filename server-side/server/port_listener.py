@@ -75,7 +75,7 @@ def start_listening():
                     if data_processing_status is None:
                         response_data = {'status': 'None' }
                     else:
-                        response_data = {'status': 'Success', "motorState": state if data_processing_status else 'Error'}
+                        response_data = {'status': 'Success', "motorState": motorState if data_processing_status else 'Error'}
                     # Convert the response data to JSON format
                     response_json = json.dumps(response_data)
 
