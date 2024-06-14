@@ -2,7 +2,6 @@ import socket
 import time
 import dbStore as send_to_db
 import singleRowData as srd
-import motorState as ms
 import json
 import motorState
 
@@ -73,7 +72,6 @@ def start_listening():
                         data_processing_status = False  # Invalid POST request format
                 elif b"GET /" in data:
                     # Handle GET request
-                    state = ms.fetch_motor_state()
                     if data_processing_status is None:
                         response_data = {'status': 'None' }
                     else:

@@ -52,7 +52,7 @@ def render(app: Dash) -> dbc.Row:
         Output("motor-switch", "value"),
         Input("interval-component", "n_intervals")
     )
-    def update_switch_value(_):
+    def update_switch_value():
         return fetch_latest_data()
 
     return dbc.Row(
