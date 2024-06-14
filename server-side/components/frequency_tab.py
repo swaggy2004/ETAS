@@ -9,8 +9,7 @@ def render(app: Dash) -> imports.dbc.Row:
         className="mb-5 text-center",
         children=[
             imports.dbc.Col(
-                html.Div(
-                    dcc.RadioItems(
+                dcc.RadioItems(
                     id=ids.DATA_FREQUENCY,
                     className="btn-group btn-group-md w-75",
                     inputClassName="btn-check",
@@ -22,10 +21,8 @@ def render(app: Dash) -> imports.dbc.Row:
                     ],
                     value="Daily",
                     inline=True,
-                    ),
-                    className="d-flex justify-content-center",
                 ),
-                className="d-flex radio-group text-center",
+                className="radio-group text-center",
                 xs=12,
             ),
         ]
