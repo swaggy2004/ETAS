@@ -43,11 +43,11 @@ def render(app: Dash) -> dbc.Row:
         Input("motor-switch", "value"),
     )
     def update_motor_switch_label(value: bool) -> str:
+        if not value:  # Add this condition to return "OFF" when the value is None or False
+            return "OFF"
         state = 1 if value else 0
         print("State:", state)
         update_data(state)
-        if state not in [0, 1]:
-            return "OFF"
         return "ON" if value else "OFF"
 
     @app.callback(
