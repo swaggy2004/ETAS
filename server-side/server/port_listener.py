@@ -7,7 +7,7 @@ import motorState
 
 # Variable to store the status of data processing
 data_processing_status = "Error"
-
+motor_state = 0
 
 def extracting_values(data):
     global data_processing_status
@@ -75,7 +75,7 @@ def start_listening():
                     if data_processing_status is None:
                         response_data = {'status': 'None' }
                     else:
-                        response_data = {'status': 'Success', "motorState": motorState if data_processing_status else 'Error'}
+                        response_data = {'status': 'Success', "motorState": motor_state if data_processing_status else 'Error'}
                     # Convert the response data to JSON format
                     response_json = json.dumps(response_data)
 
