@@ -14,9 +14,9 @@ def fetch_motor_state():
         df = pd.read_sql(sql, engine)
         state = df.iloc[0]['motorState']
         if (state == 0):
-            state = "OFF"
+            state = 0
         else:
-            state = "ON"
+            state = 1
         print("Fetched state:", state)
         return state
 

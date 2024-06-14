@@ -14,7 +14,7 @@ def create_layout(app: Dash) -> imports.dbc.Container:
             html.H1(app.title, className="display-1 text-center mb-1 mt-5"),
             html.H4("(Enviro Track Aqua Shield)",
                     className="text-center fw-lighter mb-5"),
-            html.H2("Motor Control", className="text-center h2 fw-lighter mb-3"),
+            html.H2("Turbo Control", className="text-center h2 fw-lighter mb-3"),
             motor_button.render(app),
             html.H2("Live Updates", className="text-center h2 fw-lighter mb-3"),
             live_update.render(app),
