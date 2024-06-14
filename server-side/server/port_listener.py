@@ -25,7 +25,7 @@ def extracting_values(data):
         latitude = data_dict.get('latitude')
         # Default value -1 if motorState is not present
         #motor_state = int(data_dict.get('motorState'))
-        motor_state = motorState.get_checker()
+        motor_state = motorState.fetch_motor_state()
 
         # Check if all values are present
         if ph is not None and turbidity is not None and tds is not None and temp is not None and longitude is not None and latitude is not None and motor_state != -1:
